@@ -101,7 +101,330 @@ CLEAR_NONCE_KEY = "clear_all_nonce"
 CLEAR_RERUN_KEY = "clear_all_force_rerun"
 
 
-st.set_page_config(page_title=APP_TITLE, layout="wide")
+# --------------------------------------------------------------------------- #
+# Design system: global styling, hero header, section headers, status cards.
+# --------------------------------------------------------------------------- #
+
+_THEME_CSS = """
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --vp-bg: #f5f7fb;
+    --vp-surface: #ffffff;
+    --vp-ink: #0f1b2d;
+    --vp-muted: #5b6b82;
+    --vp-border: #e4e9f2;
+    --vp-primary: #2563eb;
+    --vp-primary-dark: #1d4ed8;
+    --vp-accent: #7c3aed;
+    --vp-radius: 14px;
+    --vp-shadow: 0 1px 2px rgba(15, 27, 45, 0.04), 0 8px 24px rgba(15, 27, 45, 0.06);
+}
+
+html, body, [class*="css"], .stApp, [data-testid="stAppViewContainer"] {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.stApp { background: var(--vp-bg); color: var(--vp-ink); }
+
+/* Constrain and pad the main content column */
+.block-container { padding-top: 1.6rem; padding-bottom: 4rem; max-width: 1360px; }
+
+h1, h2, h3, h4 { color: var(--vp-ink); font-weight: 700; letter-spacing: -0.01em; }
+
+/* ------- Hero ------- */
+.vp-hero {
+    position: relative;
+    border-radius: 20px;
+    padding: 30px 34px;
+    margin-bottom: 22px;
+    color: #fff;
+    background:
+        radial-gradient(1200px 300px at 90% -40%, rgba(124, 58, 237, 0.55), transparent 60%),
+        linear-gradient(120deg, #1e3a8a 0%, #2563eb 45%, #4f46e5 100%);
+    box-shadow: 0 18px 40px rgba(37, 99, 235, 0.28);
+    overflow: hidden;
+}
+.vp-hero::after {
+    content: "";
+    position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.10) 1px, transparent 1px);
+    background-size: 18px 18px;
+    opacity: 0.4; pointer-events: none;
+}
+.vp-hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.22);
+    padding: 5px 12px; border-radius: 999px;
+}
+.vp-hero-title { font-size: 2.15rem; font-weight: 800; margin: 14px 0 6px; line-height: 1.1; }
+.vp-hero-sub { font-size: 1.02rem; color: rgba(255,255,255,0.90); max-width: 760px; margin: 0; }
+.vp-steps { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; position: relative; z-index: 1; }
+.vp-step {
+    display: inline-flex; align-items: center; gap: 9px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.22);
+    color: #fff; font-size: 0.82rem; font-weight: 500;
+    padding: 8px 13px; border-radius: 10px; backdrop-filter: blur(4px);
+}
+.vp-step b { font-weight: 700; }
+.vp-step-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 20px; height: 20px; border-radius: 6px;
+    background: rgba(255,255,255,0.22); font-size: 0.72rem; font-weight: 700;
+}
+
+/* ------- Section headers ------- */
+.vp-section {
+    display: flex; align-items: center; gap: 13px;
+    margin: 30px 0 8px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--vp-border);
+}
+.vp-section-icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; flex: 0 0 40px;
+    border-radius: 11px;
+    background: linear-gradient(135deg, rgba(37,99,235,0.12), rgba(124,58,237,0.12));
+    color: var(--vp-primary);
+    border: 1px solid rgba(37,99,235,0.18);
+}
+.vp-section-icon svg { width: 20px; height: 20px; }
+.vp-section-title { font-size: 1.22rem; font-weight: 700; line-height: 1.15; }
+.vp-section-sub { font-size: 0.86rem; color: var(--vp-muted); margin-top: 2px; }
+
+/* ------- Status cards ------- */
+.vp-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin: 6px 0 4px; }
+.vp-stat {
+    background: var(--vp-surface);
+    border: 1px solid var(--vp-border);
+    border-radius: var(--vp-radius);
+    padding: 16px 18px;
+    box-shadow: var(--vp-shadow);
+    position: relative; overflow: hidden;
+}
+.vp-stat::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+    background: linear-gradient(180deg, var(--vp-primary), var(--vp-accent));
+}
+.vp-stat-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--vp-muted); }
+.vp-stat-value { font-size: 1.7rem; font-weight: 800; color: var(--vp-ink); line-height: 1.1; margin-top: 4px; }
+.vp-stat-hint { font-size: 0.78rem; color: var(--vp-muted); margin-top: 3px; }
+.vp-badge {
+    display: inline-block; font-size: 0.72rem; font-weight: 600;
+    padding: 2px 9px; border-radius: 999px; margin-top: 6px;
+}
+.vp-badge.ok { background: rgba(16,185,129,0.12); color: #047857; }
+.vp-badge.idle { background: rgba(100,116,139,0.14); color: #475569; }
+
+/* ------- Sidebar ------- */
+section[data-testid="stSidebar"] {
+    background: linear-gradient(185deg, #101a2e 0%, #16233d 100%);
+    border-right: 1px solid rgba(255,255,255,0.06);
+}
+section[data-testid="stSidebar"] * { color: #dbe4f3; }
+section[data-testid="stSidebar"] h1,
+section[data-testid="stSidebar"] h2,
+section[data-testid="stSidebar"] h3 { color: #ffffff; }
+section[data-testid="stSidebar"] [data-testid="stWidgetLabel"] p { color: #aebbd1; font-weight: 500; }
+/* Keep values typed into sidebar inputs dark-on-white for contrast */
+section[data-testid="stSidebar"] input,
+section[data-testid="stSidebar"] textarea,
+section[data-testid="stSidebar"] [data-baseweb="input"] input,
+section[data-testid="stSidebar"] [data-baseweb="select"] div[value],
+section[data-testid="stSidebar"] [data-baseweb="select"] span { color: #0f1b2d; }
+section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] {
+    background: #0d1626; border: 1px dashed rgba(255,255,255,0.28); border-radius: 12px;
+}
+section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] * { color: #c8d4e8; }
+.vp-brand { display: flex; align-items: center; gap: 12px; padding: 4px 2px 14px; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.vp-brand-logo {
+    width: 42px; height: 42px; border-radius: 12px; flex: 0 0 42px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    box-shadow: 0 6px 16px rgba(37,99,235,0.4);
+}
+.vp-brand-logo svg { width: 22px; height: 22px; color: #fff; }
+.vp-brand-name { font-size: 1.02rem; font-weight: 700; color: #fff; line-height: 1.15; }
+.vp-brand-tag { font-size: 0.72rem; color: #9fb0cc; }
+
+/* ------- Controls ------- */
+.stButton > button, .stDownloadButton > button, .stFormSubmitButton > button {
+    border-radius: 10px; font-weight: 600; border: 1px solid var(--vp-border);
+    transition: transform .05s ease, box-shadow .15s ease, background .15s ease;
+}
+.stButton > button:hover, .stDownloadButton > button:hover, .stFormSubmitButton > button:hover {
+    box-shadow: var(--vp-shadow); transform: translateY(-1px);
+}
+.stButton > button[kind="primary"], .stFormSubmitButton > button[kind="primary"] {
+    background: linear-gradient(135deg, var(--vp-primary), var(--vp-primary-dark));
+    border: none; color: #fff;
+}
+section[data-testid="stSidebar"] .stButton > button {
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); color: #fff;
+}
+section[data-testid="stSidebar"] .stButton > button:hover { background: rgba(255,255,255,0.14); }
+
+/* Inputs */
+[data-testid="stTextInput"] input, [data-testid="stNumberInput"] input,
+[data-baseweb="select"] > div, [data-testid="stTextArea"] textarea {
+    border-radius: 10px !important;
+}
+
+/* Expanders as cards */
+[data-testid="stExpander"] {
+    border: 1px solid var(--vp-border) !important;
+    border-radius: var(--vp-radius) !important;
+    background: var(--vp-surface);
+    box-shadow: var(--vp-shadow);
+    overflow: hidden;
+}
+[data-testid="stExpander"] summary { font-weight: 600; }
+
+/* Bordered containers -> cards */
+[data-testid="stVerticalBlockBorderWrapper"] {
+    border-radius: var(--vp-radius) !important;
+}
+
+/* Dataframes */
+[data-testid="stDataFrame"], [data-testid="stTable"] {
+    border-radius: var(--vp-radius); overflow: hidden; border: 1px solid var(--vp-border);
+}
+
+/* Alerts */
+[data-testid="stAlert"] { border-radius: 12px; border: 1px solid var(--vp-border); }
+
+/* Plotly chart card */
+[data-testid="stPlotlyChart"] {
+    background: var(--vp-surface);
+    border: 1px solid var(--vp-border);
+    border-radius: var(--vp-radius);
+    padding: 8px 6px;
+    box-shadow: var(--vp-shadow);
+}
+
+/* Tabs */
+[data-baseweb="tab-list"] { gap: 6px; }
+[data-baseweb="tab"] { border-radius: 10px 10px 0 0; }
+
+footer, #MainMenu { visibility: hidden; }
+</style>
+"""
+
+_ICONS = {
+    "database": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>',
+    "ruler": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l5-5 13 13-5 5z"/><path d="M8 6l2 2M11 9l2 2M14 12l2 2"/></svg>',
+    "signal": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-6 4 4 5-8 4 6"/></svg>',
+    "target": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/></svg>',
+    "scatter": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><circle cx="8" cy="15" r="1.4"/><circle cx="12" cy="9" r="1.4"/><circle cx="16" cy="13" r="1.4"/><circle cx="19" cy="7" r="1.4"/></svg>',
+    "tag": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12l-8 8-9-9V3h8z"/><circle cx="7.5" cy="7.5" r="1.4"/></svg>',
+    "audit": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg>',
+    "chart": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l3-4 3 2 5-7"/></svg>',
+    "metric": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21a9 9 0 1 1 9-9"/><path d="M12 12l4-3"/></svg>',
+    "car": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13l2-5a2 2 0 0 1 2-1h10a2 2 0 0 1 2 1l2 5"/><path d="M3 13h18v4H3z"/><circle cx="7" cy="17" r="1.6"/><circle cx="17" cy="17" r="1.6"/></svg>',
+}
+
+
+def inject_global_styles() -> None:
+    st.markdown(_THEME_CSS, unsafe_allow_html=True)
+
+
+def render_hero() -> None:
+    steps = [
+        ("1", "Load files"),
+        ("2", "Configure signals & units"),
+        ("3", "Import targets / scatter"),
+        ("4", "Label tests"),
+        ("5", "Plot & style"),
+        ("6", "Metrics & export"),
+    ]
+    chips = "".join(
+        f'<span class="vp-step"><span class="vp-step-num">{num}</span>{label}</span>'
+        for num, label in steps
+    )
+    st.markdown(
+        f"""
+<div class="vp-hero">
+    <span class="vp-hero-eyebrow">{_ICONS['car']}&nbsp; Vehicle Performance Studio</span>
+    <div class="vp-hero-title">{APP_TITLE}</div>
+    <p class="vp-hero-sub">{APP_TAGLINE}. Load ETAS INCA MDF/MF4/DAT files, average
+    repeated runs, overlay target curves, and export publication-ready plots and metrics.</p>
+    <div class="vp-steps">{chips}</div>
+</div>
+""",
+        unsafe_allow_html=True,
+    )
+
+
+def section_header(title: str, subtitle: str = "", icon: str = "chart") -> None:
+    svg = _ICONS.get(icon, _ICONS["chart"])
+    sub_html = f'<div class="vp-section-sub">{subtitle}</div>' if subtitle else ""
+    st.markdown(
+        f"""
+<div class="vp-section">
+    <div class="vp-section-icon">{svg}</div>
+    <div>
+        <div class="vp-section-title">{title}</div>
+        {sub_html}
+    </div>
+</div>
+""",
+        unsafe_allow_html=True,
+    )
+
+
+def _stat_card(label: str, value: str, hint: str = "", badge: str = "", badge_kind: str = "idle") -> str:
+    hint_html = f'<div class="vp-stat-hint">{hint}</div>' if hint else ""
+    badge_html = f'<span class="vp-badge {badge_kind}">{badge}</span>' if badge else ""
+    return (
+        f'<div class="vp-stat"><div class="vp-stat-label">{label}</div>'
+        f'<div class="vp-stat-value">{value}</div>{hint_html}{badge_html}</div>'
+    )
+
+
+def render_status_strip(cards: list[str]) -> None:
+    st.markdown(
+        f'<div class="vp-stats">{"".join(cards)}</div>',
+        unsafe_allow_html=True,
+    )
+
+
+def sidebar_brand() -> None:
+    st.markdown(
+        f"""
+<div class="vp-brand">
+    <span class="vp-brand-logo">{_ICONS['car']}</span>
+    <div>
+        <div class="vp-brand-name">Vehicle Plotter</div>
+        <div class="vp-brand-tag">Speed vs Acceleration Studio</div>
+    </div>
+</div>
+""",
+        unsafe_allow_html=True,
+    )
+
+
+APP_TAGLINE = "Measurement analytics for launch & deceleration performance"
+
+st.set_page_config(
+    page_title=APP_TITLE,
+    page_icon="\U0001F697",
+    layout="wide",
+    initial_sidebar_state="expanded",
+    menu_items={
+        "About": (
+            f"### {APP_TITLE}\n"
+            "Analyze ETAS INCA measurement files, average repeated runs, and "
+            "export professional Speed vs Acceleration plots and metrics."
+        )
+    },
+)
+
+inject_global_styles()
 
 if st.session_state.pop(CLEAR_RERUN_KEY, False):
     st.rerun()
@@ -606,15 +929,12 @@ For any questions, please contact Shubham Ketkale.
         )
 
 
-st.title(APP_TITLE)
-st.caption(
-    "Load ETAS INCA MDF/MF4/DAT files, label tests, average repeated runs, "
-    "and export speed-vs-acceleration plots."
-)
+render_hero()
 render_help_section()
 
 
 with st.sidebar:
+    sidebar_brand()
     st.header("1. Load files")
     load_method = st.radio(
         "File loading method",
@@ -766,6 +1086,30 @@ file_names = list(measurement_sources.keys())
 has_measurements = bool(measurement_sources)
 metadata = metadata_for_current_uploads(file_names, tuple(file_signatures.items())) if has_measurements else pd.DataFrame()
 
+_mode_short = "Local folder" if load_method == "Read from local folder" else "Browser upload"
+_files_badge = ("Loaded", "ok") if has_measurements else ("Awaiting files", "idle")
+_raster_hint = "Native rasters" if raster_step_s is None else f"{raster_step_s:g} s step"
+render_status_strip(
+    [
+        _stat_card("Loading mode", _mode_short, hint="Source of measurement data"),
+        _stat_card(
+            "Measurement files",
+            str(len(file_names)),
+            hint="Ready for signal mapping" if has_measurements else "Local folder or browser upload",
+            badge=_files_badge[0],
+            badge_kind=_files_badge[1],
+        ),
+        _stat_card("Resample step", _raster_hint, hint="Optional MDF time raster"),
+        _stat_card(
+            "Session",
+            "Active" if has_measurements else "Target-only ready",
+            hint="Import targets/scatter without MDF data",
+            badge="Live" if has_measurements else "Idle",
+            badge_kind="ok" if has_measurements else "idle",
+        ),
+    ]
+)
+
 speed_signal = ""
 accel_signal = ""
 brake_signal = ""
@@ -775,9 +1119,17 @@ detected_accel_unit = ""
 speed_input_unit = "KPH"
 acceleration_input_unit = "m/s^2"
 
-st.subheader("Units and Conversion")
+section_header(
+    "Units & Conversion",
+    "Confirm detected units and choose the graph/export units",
+    icon="ruler",
+)
 if has_measurements:
-    st.subheader("Signal Selection")
+    section_header(
+        "Signal Selection",
+        "Map the four required MDF channels",
+        icon="signal",
+    )
     channel_errors: list[str] = []
     all_channels: set[str] = set()
 
@@ -908,7 +1260,11 @@ settings = replace(
 target_curves = pd.DataFrame()
 target_parse_errors: list[str] = []
 
-st.subheader("Target Data (optional)")
+section_header(
+    "Target Data",
+    "Overlay reference Speed vs Acceleration curves (optional)",
+    icon="target",
+)
 with st.expander("Import or paste target Speed vs Acceleration data", expanded=False):
     st.write(
         "Use this when target/reference curves are available in Excel, CSV, "
@@ -1078,7 +1434,11 @@ with st.expander("Import or paste target Speed vs Acceleration data", expanded=F
 scatter_curves = pd.DataFrame()
 scatter_parse_errors: list[str] = []
 
-st.subheader("Random Scatter plots (optional)")
+section_header(
+    "Random Scatter Plots",
+    "Plot arbitrary Excel-style X/Y data, independent of MDF (optional)",
+    icon="scatter",
+)
 with st.expander("Import or paste arbitrary X/Y scatter data", expanded=False):
     st.write(
         "Use this for Excel-style scatter plots that are not necessarily Speed vs Acceleration."
@@ -1507,7 +1867,11 @@ with st.expander("Import or paste arbitrary X/Y scatter data", expanded=False):
 save_labels = False
 run_clicked = False
 if has_measurements:
-    st.subheader("File Labels")
+    section_header(
+        "File Labels",
+        "Classify each run and assign mode, regen, and target pedal",
+        icon="tag",
+    )
     st.write(
         "For single-pedal maneuvers use `Auto`, or select the known pedal value. "
         "For a 0% creep launch, select target `0` explicitly so the brake-release logic is used."
@@ -1666,7 +2030,11 @@ audit_table = (
 )
 
 if has_generated_measurements:
-    st.subheader("Usable Data Audit")
+    section_header(
+        "Usable Data Audit",
+        "How each file and target was classified during processing",
+        icon="audit",
+    )
     if audit_table.empty:
         st.info("No usable data was found. Check signal selections, labels, target pedals, and tolerances.")
     else:
@@ -1688,7 +2056,11 @@ if combined_available.empty:
         st.info("Random scatter data is shown above. Load measurement files or target Speed vs Acceleration data to use Plot Controls and Metrics.")
     st.stop()
 
-st.subheader("Plot Controls")
+section_header(
+    "Plot Controls",
+    "Filter curves, style them, and export the Speed vs Acceleration graph",
+    icon="chart",
+)
 available_test_types = [
     test_type for test_type in ["Launch", "Deceleration", "Target"]
     if test_type in set(combined_available["test_type"])
@@ -1805,7 +2177,11 @@ with export_cols[2]:
     except Exception as exc:
         st.warning(f"PNG export is unavailable until Kaleido is installed correctly: {exc}")
 
-st.subheader("Metrics (optional)")
+section_header(
+    "Metrics",
+    "Peak acceleration, road load, slope, and speed-band averages (optional)",
+    icon="metric",
+)
 with st.expander("Calculate Speed vs Acceleration metrics", expanded=False):
     st.caption(
         "Metrics use the curves currently selected in Plot Controls. "

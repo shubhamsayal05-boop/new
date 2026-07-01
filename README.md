@@ -8,6 +8,9 @@ calculate Speed vs Acceleration metrics.
 
 ## Features
 
+- A polished, modern UI: branded hero header with a workflow guide, live
+  workspace status cards, icon-tiled section headers, and a refined dark
+  sidebar and card-based layout.
 - Read measurement files from a local folder (recommended for large files) or
   upload them in the browser.
 - Select the four required MDF signals (Speed, Acceleration, Brake, Accelerator
