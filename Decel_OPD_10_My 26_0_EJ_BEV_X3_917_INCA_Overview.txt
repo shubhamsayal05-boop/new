@@ -1,0 +1,88 @@
+COMMENT
+Date Time:	2025-10-20 12:11:41
+Duration[s]:	235
+Drive Version:	4.6.0.197
+Vehicle Attribute(s):	Driveability
+Data-Interface:	INCA
+IDF File:   	C:\Users\Public\Documents\AVLDRIVE_V4.6.0\Vehicle Configuration\My26EJ_BEV_917\My26EJ_BEV_917.idf
+Vehicle:    	My26EJ_BEV_917
+Vehicle Config.:	My26EJ_BEV_917
+Vehicle Class:	Medium
+Propulsion System:	Electric Motor
+Transmission Type:	SST/MST
+Weight File:	T10-weight-medium
+
+VEHICLE
+Mass [kg]:	2781.40
+Payload [kg]:	150.00
+Wheel radius [m]:	0.40
+Ambient air pressure [mbar]:	1013.00
+
+ENGINE
+Displacement [l]:	2.00
+Number of cylinders:	4.00
+Idle speed [rpm]:	700.00
+Max. Power [kW]:	249.93
+Rpm@Pmax [rpm]:	6000.00
+Max. Torque [Nm]:	420.00
+Rpm@Tmax [rpm]:	4000.00
+BMEP max [bar]:	26.39
+
+DRIVETRAIN
+Drivetrain mode:	AWD
+Number of gears:	1
+Gear		TipIn[Hz]	GearRatio[rpm/kph]	kph at 1000rpm	Efficiency
+Gear1:		8.00	79.23		12.62	1.00
+
+EVENT				DR	COUNT	S-MIN	S-MAX	SIGMA
+OverAll:			 7.2	5
+Drive away:			----	0	0.00	0.00	0.000
+Acceleration:			----	0	0.00	0.00	0.000
+Performance:			----	0	0.00	0.00	0.000
+Tip in:				----	0	0.00	0.00	0.000
+Tip out:			----	0	0.00	0.00	0.000
+Deceleration:			 7.2	5	6.54	9.70	0.906
+Gear shift:			----	0	0.00	0.00	0.000
+Constant speed:			----	0	0.00	0.00	0.000
+Vehicle stationary:		----	0	0.00	0.00	0.000
+Custom event:			----	0	0.00	0.00	0.000
+
+Detected Operation Modes
+
+t start [s]	t end [s]	DR 	DR Min.Crit.	Event	
+ 3.72	 5.79	----	----	Acceleration   Constant load 	
+ 5.44	 9.04	----	----	Acceleration   Load increase 	
+ 7.26	11.20	----	----	Acceleration   Constant load 	
+13.46	18.28	 7.4	 7.1	Deceleration   Without brake 	
+18.26	21.75	----	----	Acceleration   Load increase 	
+30.66	35.78	----	----	Constant speed   Constant load 	
+35.79	40.91	----	----	Constant speed   Constant load 	
+40.92	46.04	----	----	Constant speed   Constant load 	
+46.05	51.17	----	----	Constant speed   Constant load 	
+51.18	56.30	----	----	Constant speed   Constant load 	
+56.31	61.43	----	----	Constant speed   Constant load 	
+61.44	63.32	----	----	Constant speed   Constant load 	
+65.29	66.92	----	----	Acceleration   Load decrease 	
+66.35	69.84	----	----	Acceleration   Load increase 	
+71.24	102.17	 7.1	 6.8	Deceleration   Without brake 	
+102.17	108.88	 7.7	 6.6	Deceleration   Transition to constant speed 	
+109.96	115.08	----	----	Constant speed   Constant load 	
+115.09	119.45	----	----	Constant speed   Constant load 	
+119.38	125.98	----	----	Acceleration   Load increase 	
+123.98	126.36	----	----	Acceleration   Constant load 	
+126.33	128.62	----	----	Acceleration   Load increase 	
+131.25	133.09	----	----	Acceleration   Load decrease 	
+132.93	135.04	----	----	Acceleration   Load decrease 	
+134.21	137.48	----	----	Acceleration   Load increase 	
+140.18	145.30	----	----	Constant speed   Constant load 	
+145.31	150.43	----	----	Constant speed   Constant load 	
+150.44	155.56	----	----	Constant speed   Constant load 	
+155.57	160.69	----	----	Constant speed   Constant load 	
+160.70	165.82	----	----	Constant speed   Constant load 	
+165.83	169.29	----	----	Constant speed   Constant load 	
+175.02	207.07	 6.9	 6.5	Deceleration   Without brake 	
+207.07	213.68	 9.1	 8.9	Deceleration   Transition to constant speed 	
+210.40	215.52	----	----	Constant speed   Constant load 	
+215.53	220.65	----	----	Constant speed   Constant load 	
+220.66	225.78	----	----	Constant speed   Constant load 	
+225.79	230.91	----	----	Constant speed   Constant load 	

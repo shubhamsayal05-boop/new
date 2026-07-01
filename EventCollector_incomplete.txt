@@ -1,0 +1,16 @@
+Event Collector: BEV_V46_Deceleration incomplete - 1195/1200 events missing
+
+
+Event	Variation	Number of Events	Reliability [%]	mean brake pos [%]	brake [-]
+Deceleration - Transition to constant speed	1 of 1	98 of 100	90	-	-	
+Deceleration - Without brake	1 of 1	97 of 100	28	-	0	
+Deceleration - Constant Brake	1 of 7	100 of 100	90	10 ± 3	1	
+Deceleration - Constant Brake	2 of 7	100 of 100	90	15 ± 3	1	
+Deceleration - Constant Brake	3 of 7	100 of 100	90	20 ± 3	1	
+Deceleration - Constant Brake	4 of 7	100 of 100	90	25 ± 3	1	
+Deceleration - Constant Brake	5 of 7	100 of 100	90	30 ± 3	1	
+Deceleration - Constant Brake	6 of 7	100 of 100	90	35 ± 3	1	
+Deceleration - Constant Brake	7 of 7	100 of 100	90	40 ± 3	1	
+Constant speed - Without load	1 of 1	100 of 100	74	-	-	
+Vehicle stationary - Vehicle stop	1 of 1	100 of 100	37	-	-	
+Vehicle stationary - Vehicle at standstill	1 of 1	100 of 100	100	-	-	

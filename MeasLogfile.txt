@@ -1,0 +1,56 @@
+2025-10-20 12:07:11.473	START-Measurement
+		
+2025-10-20 12:07:11.484
+		OpenExperiment(MY26_EJ_BEV, STLA L BEV General_26EF_v39_EVCU_AVL, MY26_EJ_BEV, J5O 26EF)
+2025-10-20 12:07:11.488
+		CalcDev\Calc_Pedal_Perc Id=1004 AcceleratorPedal
+		ES610 / AD:1\Accel_Raw_CA Id=30553 AccelerationWheel_Z_FL_RIC
+		ES610 / AD:1\Accel_Raw_X Id=1007 AccelerationChassis
+		ES610 / AD:1\Accel_Raw_Y Id=1019 AccelerationLateral
+		ES610 / AD:1\Accel_Raw_Z Id=1208 AccelerationVertical
+		XETK:1\VeHVTI_I_MtrA_DC_Crnt Id=30645 EM2Current
+		XETK:1\VeHVTI_I_MtrB_DC_Crnt Id=30643 EMCurrent
+		XETK:1\VeBPCR_Pct_HV_BatPackSOC Id=1221 BattSOC
+		XETK:1\VeTRGR_e_PRNDLReq Id=1018 SelectorLeverDMU
+		XETK:1\VeHVTR_I_HV_BatCurrArb Id=1222 BattCurrent
+		XETK:1\VeHVTR_U_HV_Volt Id=1220 BattVoltage
+		XETK:1\VeTAIR_n_CompSpdFdb Id=1014 AirCondition
+		XETK:1\VeCSVR_v_VehSpd Id=1003 VehicleSpeed
+		XETK:1\VeINVR_U_MtrA_DC_Volt Id=30646 EM2Voltage
+		XETK:1\VeINVR_U_MtrB_DC_Volt Id=30644 EMVoltage
+		XETK:1\VeMSPR_n_MtrA_Spd Id=30535 EMSpeed2
+		XETK:1\VeMSPR_n_MtrB_Spd Id=1964 EMSpeed
+		XETK:1\VeMTIR_M_MtrA_TorqAchieved Id=30647 EM2Torque
+		XETK:1\VeMTIR_M_MtrB_TorqAchieved Id=1225 EMTorque
+		XETK:1\VeAATR_T_SCP_AmbientTemp Id=30392 AmbientTemperature
+		XETK:1\VeBPCR_T_BatModTmp Id=30654 BattTemperature
+		XETK:1\VeBRKR_Pct_BrkTravelSts Id=1534 BrakePosition
+		XETK:1\WheelSpeed_FL_Com_kmph_eAppIn Id=1802 WheelSpeed_FL
+		XETK:1\WheelSpeed_FR_Com_kmph_eAppIn Id=1803 WheelSpeed_FR
+		XETK:1\WheelSpeed_RL_Com_kmph_eAppIn Id=1804 WheelSpeed_RL
+		XETK:1\WheelSpeed_RR_Com_kmph_eAppIn Id=1805 WheelSpeed_RR
+		
+2025-10-20 12:07:11.525
+		CalcDev = vGrp_All1_7
+		ES610 / AD:1 = 1ms
+		XETK:1 = 100ms_Core0
+		XETK:1 = 10ms_Core0
+		XETK:1 = 10ms_Core1
+		XETK:1 = 10ms_Core2
+		XETK:1 = 10ms_Core3
+		XETK:1 = 10ms_Core5
+		XETK:1 = 500us_Core0
+		XETK:1 = 50ms_Core0
+		XETK:1 = 5ms_Core0
+		XETK:1 = 5ms_Core1_QM
+		
+2025-10-20 12:07:15.802
+		Signal EM2Current: no values received for 0.11 [s]
+		
+2025-10-20 12:07:15.805
+		Signal EMCurrent: no values received for 0.11 [s]
+		
+2025-10-20 12:07:16.532	START-Event-Detection
+		
+2025-10-20 12:11:15.612	END-Event-Detection
+		

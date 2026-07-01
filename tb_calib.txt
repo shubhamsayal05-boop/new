@@ -1,0 +1,38 @@
+VehDatBegin
+420.000000	Maximales Moment	[Nm]
+4000.000000	Drehzahl bei max. Moment	[rpm]
+2.000000	Hubraum	[cm^3]
+2781.400000	Fahrzeuggewicht	[kg]
+0.402000	Reifenradius	[m]
+153.500000	A0 konstanter Anteil	[N]
+0.450000	B0 linearer Anteil	[N]
+0.043000	C0 quadratischer Anteil	[N]
+1	Anzahl der Gänge	[-]
+79.235000	Übersetzung 1. Gang (n/v)	[-]
+1.000000	Übersetzung 2. Gang (n/v)	[-]
+1.000000	Übersetzung 3. Gang (n/v)	[-]
+1.000000	Übersetzung 4. Gang (n/v)	[-]
+1.000000	Übersetzung 5. Gang (n/v)	[-]
+1.000000	Übersetzung 6. Gang (n/v)	[-]
+8.000000	Eigenfrequenz 1.Gang	[Hz]
+4.000000	Eigenfrequenz 2.Gang	[Hz]
+5.000000	Eigenfrequenz 3.Gang	[Hz]
+7.000000	Eigenfrequenz 4.Gang	[Hz]
+8.000000	Eigenfrequenz 5.Gang	[Hz]
+8.000000	Eigenfrequenz 6.Gang	[Hz]
+VehDatEnd
+
+JerkBegin
+10030101
+Tip in-At deceleration-Jerksnot found [-]
+JerkEnd
+
+KickBegin
+10030104
+Tip in-At deceleration-Kicknot found [-]
+KickEnd
+
+DriveAwayBegin
+10100100
+DriveAwayEnd
+

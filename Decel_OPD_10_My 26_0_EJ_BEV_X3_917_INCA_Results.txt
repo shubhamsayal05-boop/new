@@ -1,0 +1,532 @@
+COMMENT
+Date Time:	2025-10-20 12:11:15
+Duration[s]:	235
+Drive Version:	4.6.0.197
+Vehicle Attribute(s):	Driveability
+Data-Interface:	INCA
+IDF File:   	C:\Users\Public\Documents\AVLDRIVE_V4.6.0\Vehicle Configuration\My26EJ_BEV_917\My26EJ_BEV_917.idf
+Vehicle:    	My26EJ_BEV_917
+Vehicle Config.:	My26EJ_BEV_917
+Vehicle Class:	Medium
+Propulsion System:	Electric Motor
+Transmission Type:	SST/MST
+Weight File:	T10-weight-medium
+
+VEHICLE
+Mass [kg]:	2781.40
+Payload [kg]:	150.00
+Wheel radius [m]:	0.40
+Ambient air pressure [mbar]:	1013.00
+
+ENGINE
+Displacement [l]:	2.00
+Number of cylinders:	4.00
+Idle speed [rpm]:	700.00
+Max. Power [kW]:	249.93
+Rpm@Pmax [rpm]:	6000.00
+Max. Torque [Nm]:	420.00
+Rpm@Tmax [rpm]:	4000.00
+BMEP max [bar]:	26.39
+
+DRIVETRAIN
+Drivetrain mode:	AWD
+Number of gears:	1
+Gear		TipIn[Hz]	GearRatio[rpm/kph]	kph at 1000rpm	Efficiency
+Gear1:		8.00	79.23		12.62	1.00
+
+Start [s]	End [s]	Sub DR	Sub Event	Crit. DR	Criterion	<Parameter Name>	<Parameter Value>	<Parameter Unit>
+13.46	18.28	 7.4	Deceleration - Without brake
+		 7.4	Deceleration - Without brake	 8.7	Surge	ax surge	0.071	m/s²	ax surge duration	2.020	s	gear	1.000	-	v start	151.130	kph	v end	148.067	kph	mean EM torque	31.638	Nm	SOC	44.600	%
+		 7.4	Deceleration - Without brake	----	Expected deceleration weaker	delta ax	-0.128	m/s²	ax mean	-0.350	m/s²	ax expected	-0.478	m/s²	gear	1.000	-	n start	0.000	rpm	n end	14522.953	rpm	SL	3.000	-	v start	151.130	kph	v end	148.067	kph	mean EM torque	31.638	Nm	SOC	44.600	%
+		 7.4	Deceleration - Without brake	----	Reference deceleration weaker	delta ax	-0.350	m/s²	ax mean	-0.350	m/s²	ax reference	-0.700	m/s²	gear	1.000	-	n start	0.000	rpm	n end	14522.953	rpm	SL	3.000	-	v start	151.130	kph	v end	148.067	kph	mean EM torque	31.638	Nm	SOC	44.600	%
+		 7.4	Deceleration - Without brake	----	Expected deceleration stronger	delta ax	-1.000	m/s²	ax mean	-1.000	m/s²	ax expected	-1.000	m/s²	gear	1.000	-	n start	0.000	rpm	n end	14522.953	rpm	SL	3.000	-	v start	151.130	kph	v end	148.067	kph	mean EM torque	31.638	Nm	SOC	44.600	%
+		 7.4	Deceleration - Without brake	----	Reference deceleration stronger	delta ax	1.#QO	m/s²	ax mean	-1.000	m/s²	ax reference	1.#QO	m/s²	gear	1.000	-	n start	0.000	rpm	n end	14522.953	rpm	SL	3.000	-	v start	151.130	kph	v end	148.067	kph	mean EM torque	31.638	Nm	SOC	44.600	%
+		 7.4	Deceleration - Without brake	 9.7	Acceleration steps	ax amplitude	0.025	m/s²	ax max	-0.305	m/s²	gear	1.000	-	SOC	44.600	%	AC	0.000	-
+		 7.4	Deceleration - Without brake	 7.1	Acceleration disturbances	disturbances	0.791	-	disturbances LF rate	40.836	%	disturbances HF rate	59.164	%
+		 7.4	Deceleration - Without brake	 8.3	Acceleration disturbances LF	disturbances LF	0.323	-	crest factor LF	2.194	-
+		 7.4	Deceleration - Without brake	 7.8	Acceleration disturbances HF	disturbances HF	0.468	-	crest factor HF	2.154	-
+		 7.4	Deceleration - Without brake	----	Operation mode parameters	pedal	20.699	%	delta pedal	2.296	%	EM speed	14826.266	rpm	EM2 speed	10813.710	rpm	EM3 speed	1.#QO	rpm	EM4 speed	1.#QO	rpm	vehicle speed	151.130	kph	selector lever start	3.000	-	gear start	1.000	-	gear sequence	1.000	-	reverse gear	0.000	-	deceleration level	-0.354	m/s²	AC	0.000	-	ASR	0.000	-	brake	0.000	-	SOC	44.600	%	wheel slip	0.525	%	TCC	1.#QO	-	road gradient	-1.730	%	ambient temperature	25.000	°C	ambient pressure	1013.000	mbar	mode shift	1.#QO	-	mode start	1.#QO	-	mode end	1.#QO	-	mode sequence	1.#QO	-	road interference max z	0.000	m/s²	road interference max x	1.#QO	m/s²	road interference	0.000	-	driving mode DMU	1.#QO	-	event duration	4.820	s	Transm_Temp(t start)	1.#QO	°C
+71.24	102.17	 7.1	Deceleration - Without brake
+		 7.1	Deceleration - Without brake	 8.5	Surge	ax surge	0.068	m/s²	ax surge duration	4.010	s	gear	1.000	-	v start	128.839	kph	v end	14.104	kph	mean EM torque	-40.732	Nm	SOC	43.400	%
+		 7.1	Deceleration - Without brake	----	Expected deceleration weaker	delta ax	-1.000	m/s²	ax mean	-1.000	m/s²	ax expected	-1.000	m/s²	gear	1.000	-	n start	0.000	rpm	n end	1377.326	rpm	SL	3.000	-	v start	128.839	kph	v end	14.104	kph	mean EM torque	-40.732	Nm	SOC	43.400	%
+		 7.1	Deceleration - Without brake	----	Reference deceleration weaker	delta ax	1.#QO	m/s²	ax mean	-1.000	m/s²	ax reference	1.#QO	m/s²	gear	1.000	-	n start	0.000	rpm	n end	1377.326	rpm	SL	3.000	-	v start	128.839	kph	v end	14.104	kph	mean EM torque	-40.732	Nm	SOC	43.400	%
+		 7.1	Deceleration - Without brake	----	Expected deceleration stronger	delta ax	1.076	m/s²	ax mean	-1.276	m/s²	ax expected	-0.201	m/s²	gear	1.000	-	n start	0.000	rpm	n end	1377.326	rpm	SL	3.000	-	v start	128.839	kph	v end	14.104	kph	mean EM torque	-40.732	Nm	SOC	43.400	%
+		 7.1	Deceleration - Without brake	----	Reference deceleration stronger	delta ax	0.941	m/s²	ax mean	-1.276	m/s²	ax reference	-0.336	m/s²	gear	1.000	-	n start	0.000	rpm	n end	1377.326	rpm	SL	3.000	-	v start	128.839	kph	v end	14.104	kph	mean EM torque	-40.732	Nm	SOC	43.400	%
+		 7.1	Deceleration - Without brake	 9.6	Acceleration steps	ax amplitude	0.033	m/s²	ax max	-0.957	m/s²	gear	1.000	-	SOC	43.400	%	AC	0.485	-
+		 7.1	Deceleration - Without brake	 6.8	Acceleration disturbances	disturbances	0.964	-	disturbances LF rate	34.433	%	disturbances HF rate	65.567	%
+		 7.1	Deceleration - Without brake	 8.2	Acceleration disturbances LF	disturbances LF	0.332	-	crest factor LF	1.795	-
+		 7.1	Deceleration - Without brake	 7.2	Acceleration disturbances HF	disturbances HF	0.632	-	crest factor HF	2.710	-
+		 7.1	Deceleration - Without brake	----	Operation mode parameters	pedal	10.097	%	delta pedal	0.030	%	EM speed	12633.911	rpm	EM2 speed	9237.200	rpm	EM3 speed	1.#QO	rpm	EM4 speed	1.#QO	rpm	vehicle speed	128.839	kph	selector lever start	3.000	-	gear start	1.000	-	gear sequence	1.000	-	reverse gear	0.000	-	deceleration level	-1.270	m/s²	AC	0.485	-	ASR	0.000	-	brake	0.000	-	SOC	43.400	%	wheel slip	2.449	%	TCC	1.#QO	-	road gradient	-2.490	%	ambient temperature	25.000	°C	ambient pressure	1013.000	mbar	mode shift	1.#QO	-	mode start	1.#QO	-	mode end	1.#QO	-	mode sequence	1.#QO	-	road interference max z	0.000	m/s²	road interference max x	1.#QO	m/s²	road interference	0.000	-	driving mode DMU	1.#QO	-	event duration	30.930	s	Transm_Temp(t start)	1.#QO	°C
+102.17	108.88	 7.7	Deceleration - Transition to constant speed
+		 7.7	Deceleration - Transition to constant speed	 9.0	Transition shock	ax shock	1.312	m/s²/s	n at shock	630.758	rpm	t shock	104.930	s	gear	1.000	-	v start	14.104	kph	v end	5.438	kph
+		 7.7	Deceleration - Transition to constant speed	 8.9	Transition surge	ax RMS	0.025	m/s²	n at shock	630.758	rpm	t shock	104.930	s	gear	1.000	-	v start	14.104	kph	v end	5.438	kph
+		 7.7	Deceleration - Transition to constant speed	 6.6	Acceleration disturbances	disturbances	0.751	-	disturbances LF rate	95.349	%	disturbances HF rate	4.651	%	brake restriction	0.000	-
+		 7.7	Deceleration - Transition to constant speed	 6.7	Acceleration disturbances LF	disturbances LF	0.716	-	crest factor LF	2.834	-	brake restriction	0.000	-
+		 7.7	Deceleration - Transition to constant speed	 9.8	Acceleration disturbances HF	disturbances HF	0.035	-	crest factor HF	2.353	-
+		 7.7	Deceleration - Transition to constant speed	----	Operation mode parameters	pedal	10.097	%	delta pedal	0.000	%	EM speed	1377.326	rpm	EM2 speed	1004.710	rpm	EM3 speed	1.#QO	rpm	EM4 speed	1.#QO	rpm	vehicle speed	14.104	kph	selector lever start	3.000	-	gear start	1.000	-	gear sequence	1.000	-	reverse gear	0.000	-	deceleration level	-1.167	m/s²	AC	0.485	-	ASR	0.000	-	brake	0.000	-	sailing	1.#QO	-	SOC	43.800	%	wheel slip	2.542	%	TCC	1.#QO	-	road gradient	-2.311	%	ambient temperature	25.000	°C	ambient pressure	1013.000	mbar	mode shift	1.#QO	-	mode start	1.#QO	-	mode end	1.#QO	-	mode sequence	1.#QO	-	road interference max z	0.000	m/s²	road interference max x	1.#QO	m/s²	road interference	0.000	-	driving mode DMU	1.#QO	-	event duration	6.710	s	Transm_Temp(t start)	1.#QO	°C
+175.02	207.07	 6.9	Deceleration - Without brake
+		 6.9	Deceleration - Without brake	 8.6	Surge	ax surge	0.071	m/s²	ax surge duration	2.490	s	gear	1.000	-	v start	132.540	kph	v end	14.150	kph	mean EM torque	-40.286	Nm	SOC	42.300	%
+		 6.9	Deceleration - Without brake	----	Expected deceleration weaker	delta ax	-1.000	m/s²	ax mean	-1.000	m/s²	ax expected	-1.000	m/s²	gear	1.000	-	n start	0.000	rpm	n end	1383.434	rpm	SL	3.000	-	v start	132.540	kph	v end	14.150	kph	mean EM torque	-40.286	Nm	SOC	42.300	%
+		 6.9	Deceleration - Without brake	----	Reference deceleration weaker	delta ax	1.#QO	m/s²	ax mean	-1.000	m/s²	ax reference	1.#QO	m/s²	gear	1.000	-	n start	0.000	rpm	n end	1383.434	rpm	SL	3.000	-	v start	132.540	kph	v end	14.150	kph	mean EM torque	-40.286	Nm	SOC	42.300	%
+		 6.9	Deceleration - Without brake	----	Expected deceleration stronger	delta ax	1.032	m/s²	ax mean	-1.245	m/s²	ax expected	-0.213	m/s²	gear	1.000	-	n start	0.000	rpm	n end	1383.434	rpm	SL	3.000	-	v start	132.540	kph	v end	14.150	kph	mean EM torque	-40.286	Nm	SOC	42.300	%
+		 6.9	Deceleration - Without brake	----	Reference deceleration stronger	delta ax	0.893	m/s²	ax mean	-1.245	m/s²	ax reference	-0.352	m/s²	gear	1.000	-	n start	0.000	rpm	n end	1383.434	rpm	SL	3.000	-	v start	132.540	kph	v end	14.150	kph	mean EM torque	-40.286	Nm	SOC	42.300	%
+		 6.9	Deceleration - Without brake	 9.5	Acceleration steps	ax amplitude	0.044	m/s²	ax max	-0.912	m/s²	gear	1.000	-	SOC	42.300	%	AC	0.485	-
+		 6.9	Deceleration - Without brake	 6.5	Acceleration disturbances	disturbances	1.234	-	disturbances LF rate	18.994	%	disturbances HF rate	81.006	%
+		 6.9	Deceleration - Without brake	 8.6	Acceleration disturbances LF	disturbances LF	0.234	-	crest factor LF	2.213	-
+		 6.9	Deceleration - Without brake	 6.7	Acceleration disturbances HF	disturbances HF	0.999	-	crest factor HF	2.076	-
+		 6.9	Deceleration - Without brake	----	Operation mode parameters	pedal	10.097	%	delta pedal	0.000	%	EM speed	12997.095	rpm	EM2 speed	9500.780	rpm	EM3 speed	1.#QO	rpm	EM4 speed	1.#QO	rpm	vehicle speed	132.540	kph	selector lever start	3.000	-	gear start	1.000	-	gear sequence	1.000	-	reverse gear	0.000	-	deceleration level	-1.247	m/s²	AC	0.485	-	ASR	0.000	-	brake	0.000	-	SOC	42.300	%	wheel slip	1.461	%	TCC	1.#QO	-	road gradient	-2.222	%	ambient temperature	25.000	°C	ambient pressure	1013.000	mbar	mode shift	1.#QO	-	mode start	1.#QO	-	mode end	1.#QO	-	mode sequence	1.#QO	-	road interference max z	0.000	m/s²	road interference max x	1.#QO	m/s²	road interference	0.000	-	driving mode DMU	1.#QO	-	event duration	32.050	s	Transm_Temp(t start)	1.#QO	°C
+207.07	213.68	 9.1	Deceleration - Transition to constant speed
+		 9.1	Deceleration - Transition to constant speed	 9.4	Transition shock	ax shock	0.918	m/s²/s	n at shock	620.436	rpm	t shock	211.610	s	gear	1.000	-	v start	14.150	kph	v end	5.438	kph
+		 9.1	Deceleration - Transition to constant speed	 9.2	Transition surge	ax RMS	0.017	m/s²	n at shock	620.436	rpm	t shock	211.610	s	gear	1.000	-	v start	14.150	kph	v end	5.438	kph
+		 9.1	Deceleration - Transition to constant speed	 8.9	Acceleration disturbances	disturbances	0.168	-	disturbances LF rate	90.752	%	disturbances HF rate	9.248	%	brake restriction	0.000	-
+		 9.1	Deceleration - Transition to constant speed	 9.0	Acceleration disturbances LF	disturbances LF	0.152	-	crest factor LF	2.230	-	brake restriction	0.000	-
+		 9.1	Deceleration - Transition to constant speed	 9.9	Acceleration disturbances HF	disturbances HF	0.016	-	crest factor HF	2.143	-
+		 9.1	Deceleration - Transition to constant speed	----	Operation mode parameters	pedal	10.097	%	delta pedal	0.000	%	EM speed	1383.434	rpm	EM2 speed	1012.990	rpm	EM3 speed	1.#QO	rpm	EM4 speed	1.#QO	rpm	vehicle speed	14.150	kph	selector lever start	3.000	-	gear start	1.000	-	gear sequence	1.000	-	reverse gear	0.000	-	deceleration level	-1.146	m/s²	AC	0.000	-	ASR	0.000	-	brake	0.000	-	sailing	1.#QO	-	SOC	42.700	%	wheel slip	2.222	%	TCC	1.#QO	-	road gradient	-2.181	%	ambient temperature	25.000	°C	ambient pressure	1013.000	mbar	mode shift	1.#QO	-	mode start	1.#QO	-	mode end	1.#QO	-	mode sequence	1.#QO	-	road interference max z	0.000	m/s²	road interference max x	1.#QO	m/s²	road interference	0.000	-	driving mode DMU	1.#QO	-	event duration	6.610	s	Transm_Temp(t start)	1.#QO	°C
+
+
+Formula	Main	Sub	Detail	CalcKind	Weight	Count	Driveability	Min. DR	Max. DR	Sigma
+10000000	AVL-DRIVE Rating			DRIVE	0.000	5	7.22	6.54	9.70	0.000
+10100000	Drive away			DRIVE	3.000	0	-7.77	0.00	0.00	
+10101300	Drive away	Creep		DRIVE	2.000	0	-7.77	0.00	0.00	
+10101316	Drive away	Creep	Brake release delay	DRIVE	2.000	0	-7.77	0.00	0.00	
+10101301	Drive away	Creep	Brake release bump	DRIVE	4.000	0	-7.77	0.00	0.00	
+10101302	Drive away	Creep	Brake release surge	DRIVE	0.000	0	-7.77	0.00	0.00	
+10101338	Drive away	Creep	Acceleration disturbances	DRIVE	3.000	0	-7.77	0.00	0.00	
+10101321	Drive away	Creep	Acceleration disturbances LF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10101322	Drive away	Creep	Acceleration disturbances HF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10101389	Drive away	Creep	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10101388	Drive away	Creep	Calibration parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10101100	Drive away	Standing start		DRIVE	5.000	0	-7.77	0.00	0.00	
+10101116	Drive away	Standing start	Brake release delay	DRIVE	0.000	0	-7.77	0.00	0.00	
+10101101	Drive away	Standing start	Brake release bump	DRIVE	0.000	0	-7.77	0.00	0.00	
+10101111	Drive away	Standing start	Brake release surge	DRIVE	0.000	0	-7.77	0.00	0.00	
+10101102	Drive away	Standing start	Response delay	DRIVE	3.000	0	-7.77	0.00	0.00	
+10101115	Drive away	Standing start	Bump	DRIVE	3.000	0	-7.77	0.00	0.00	
+10101103	Drive away	Standing start	Stumble	DRIVE	2.000	0	-7.77	0.00	0.00	
+10101107	Drive away	Standing start	Acceleration performance	DRIVE	5.000	0	-7.77	0.00	0.00	
+10101114	Drive away	Standing start	Engagement steadiness	DRIVE	4.000	0	-7.77	0.00	0.00	
+10101112	Drive away	Standing start	Jerks	DRIVE	0.000	0	-7.77	0.00	0.00	
+10101158	Drive away	Standing start	Agility	DRIVE	1.000	0	-7.77	0.00	0.00	
+10101138	Drive away	Standing start	Acceleration disturbances	DRIVE	3.000	0	-7.77	0.00	0.00	
+10101121	Drive away	Standing start	Acceleration disturbances LF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10101105	Drive away	Standing start	Acceleration disturbances HF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10101189	Drive away	Standing start	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10101188	Drive away	Standing start	Calibration parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10101700	Drive away	Hill start		DRIVE	1.000	0	-7.77	0.00	0.00	
+10101715	Drive away	Hill start	Bump	DRIVE	0.000	0	-7.77	0.00	0.00	
+10101703	Drive away	Hill start	Stumble	DRIVE	0.000	0	-7.77	0.00	0.00	
+10101707	Drive away	Hill start	Acceleration performance	DRIVE	5.000	0	-7.77	0.00	0.00	
+10101714	Drive away	Hill start	Engagement steadiness	DRIVE	0.000	0	-7.77	0.00	0.00	
+10101712	Drive away	Hill start	Jerks	DRIVE	0.000	0	-7.77	0.00	0.00	
+10101737	Drive away	Hill start	Acceleration disturbances	DRIVE	0.000	0	-7.77	0.00	0.00	
+10101721	Drive away	Hill start	Acceleration disturbances LF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10101722	Drive away	Hill start	Acceleration disturbances HF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10101789	Drive away	Hill start	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10101788	Drive away	Hill start	Calibration parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10102400	Drive away	Rolling start		DRIVE	1.000	0	-7.77	0.00	0.00	
+10102401	Drive away	Rolling start	Response delay	DRIVE	5.000	0	-7.77	0.00	0.00	
+10102402	Drive away	Rolling start	Engagement steadiness	DRIVE	1.000	0	-7.77	0.00	0.00	
+10102404	Drive away	Rolling start	Acceleration disturbances	DRIVE	3.000	0	-7.77	0.00	0.00	
+10102421	Drive away	Rolling start	Acceleration disturbances LF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10102422	Drive away	Rolling start	Acceleration disturbances HF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10102489	Drive away	Rolling start	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10120000	Acceleration			DRIVE	3.000	0	-7.77	0.00	0.00	
+10120100	Acceleration	Full load		DRIVE	0.000	0	-7.77	0.00	0.00	
+10120102	Acceleration	Full load	90% Torque threshold	DRIVE	3.000	0	-7.77	0.00	0.00	
+10120103	Acceleration	Full load	90% Torque range	DRIVE	2.000	0	-7.77	0.00	0.00	
+10120104	Acceleration	Full load	Wide torque range	DRIVE	2.000	0	-7.77	0.00	0.00	
+10120105	Acceleration	Full load	Torque smoothness	DRIVE	3.000	0	-7.77	0.00	0.00	
+10120108	Acceleration	Full load	Surge	DRIVE	5.000	0	-7.77	0.00	0.00	
+10120113	Acceleration	Full load	Expected acceleration	DRIVE	2.000	0	-7.77	0.00	0.00	
+10120116	Acceleration	Full load	Reference acceleration	DRIVE	2.000	0	-7.77	0.00	0.00	
+10120120	Acceleration	Full load	Acceleration disturbances	DRIVE	3.000	0	-7.77	0.00	0.00	
+10120121	Acceleration	Full load	Acceleration disturbances LF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10120122	Acceleration	Full load	Acceleration disturbances HF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10120189	Acceleration	Full load	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10120200	Acceleration	Constant load		DRIVE	2.000	0	-7.77	0.00	0.00	
+10120202	Acceleration	Constant load	Surge	DRIVE	5.000	0	-7.77	0.00	0.00	
+10120215	Acceleration	Constant load	Acceleration steps	DRIVE	2.000	0	-7.77	0.00	0.00	
+10120216	Acceleration	Constant load	Expected acceleration	DRIVE	2.000	0	-7.77	0.00	0.00	
+10120214	Acceleration	Constant load	Reference acceleration	DRIVE	2.000	0	-7.77	0.00	0.00	
+10120217	Acceleration	Constant load	Pedal map	DRIVE	2.000	0	-7.77	0.00	0.00	
+10120218	Acceleration	Constant load	Acceleration disturbances	DRIVE	3.000	0	-7.77	0.00	0.00	
+10120219	Acceleration	Constant load	Acceleration disturbances LF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10120220	Acceleration	Constant load	Acceleration disturbances HF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10120289	Acceleration	Constant load	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10120300	Acceleration	Load increase		DRIVE	3.000	0	-7.77	0.00	0.00	
+10120302	Acceleration	Load increase	Surge	DRIVE	5.000	0	-7.77	0.00	0.00	
+10120320	Acceleration	Load increase	Correlation	DRIVE	2.000	0	-7.77	0.00	0.00	
+10120306	Acceleration	Load increase	Torque response	DRIVE	2.000	0	-7.77	0.00	0.00	
+10120301	Acceleration	Load increase	Torque build-up	DRIVE	2.000	0	-7.77	0.00	0.00	
+10120316	Acceleration	Load increase	Expected acceleration	DRIVE	1.000	0	-7.77	0.00	0.00	
+10120314	Acceleration	Load increase	Reference acceleration	DRIVE	1.000	0	-7.77	0.00	0.00	
+10120317	Acceleration	Load increase	Acceleration disturbances	DRIVE	3.000	0	-7.77	0.00	0.00	
+10120318	Acceleration	Load increase	Acceleration disturbances LF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10120319	Acceleration	Load increase	Acceleration disturbances HF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10120389	Acceleration	Load increase	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10120900	Acceleration	Load decrease		DRIVE	1.000	0	-7.77	0.00	0.00	
+10120902	Acceleration	Load decrease	Surge	DRIVE	5.000	0	-7.77	0.00	0.00	
+10120917	Acceleration	Load decrease	Correlation	DRIVE	2.000	0	-7.77	0.00	0.00	
+10120913	Acceleration	Load decrease	Expected acceleration	DRIVE	1.000	0	-7.77	0.00	0.00	
+10120912	Acceleration	Load decrease	Reference acceleration	DRIVE	1.000	0	-7.77	0.00	0.00	
+10120914	Acceleration	Load decrease	Acceleration disturbances	DRIVE	3.000	0	-7.77	0.00	0.00	
+10120915	Acceleration	Load decrease	Acceleration disturbances LF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10120916	Acceleration	Load decrease	Acceleration disturbances HF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10120989	Acceleration	Load decrease	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10440000	Performance			DRIVE	0.000	0	-7.77	0.00	0.00	
+10440600	Performance	0-100 kph		DRIVE	1.000	0	-7.77	0.00	0.00	
+10440601	Performance	0-100 kph	Duration 0-100 kph	DRIVE	5.000	0	-7.77	0.00	0.00	
+10440689	Performance	0-100 kph	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10441700	Performance	0->>100 kph		DRIVE	1.000	0	-7.77	0.00	0.00	
+10441702	Performance	0->>100 kph	Duration 0->>100 kph	DRIVE	5.000	0	-7.77	0.00	0.00	
+10441789	Performance	0->>100 kph	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10440500	Performance	In-gear acceleration		DRIVE	2.000	0	-7.77	0.00	0.00	
+10440501	Performance	In-gear acceleration	Duration in-gear	DRIVE	5.000	0	-7.77	0.00	0.00	
+10440589	Performance	In-gear acceleration	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10441100	Performance	Through gears acceleration		DRIVE	1.000	0	-7.77	0.00	0.00	
+10441101	Performance	Through gears acceleration	Duration through gears	DRIVE	1.000	0	-7.77	0.00	0.00	
+10441189	Performance	Through gears acceleration	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10030000	Tip in			DRIVE	3.000	0	-7.77	0.00	0.00	
+10030100	Tip in	At deceleration		DRIVE	5.000	0	-7.77	0.00	0.00	
+10030102	Tip in	At deceleration	Response delay	DRIVE	3.000	0	-7.77	0.00	0.00	
+10030120	Tip in	At deceleration	Ax increase	DRIVE	3.000	0	-7.77	0.00	0.00	
+10030105	Tip in	At deceleration	Stumble	DRIVE	1.000	0	-7.77	0.00	0.00	
+10030110	Tip in	At deceleration	Bump	DRIVE	4.000	0	-7.77	0.00	0.00	
+10030160	Tip in	At deceleration	Steadiness	DRIVE	0.000	0	-7.77	0.00	0.00	
+10030104	Tip in	At deceleration	Kick	DRIVE	4.000	0	-7.77	0.00	0.00	
+10030101	Tip in	At deceleration	Jerks	DRIVE	5.000	0	-7.77	0.00	0.00	
+10030107	Tip in	At deceleration	Absolute torque	DRIVE	1.000	0	-7.77	0.00	0.00	
+10030158	Tip in	At deceleration	Agility	DRIVE	1.000	0	-7.77	0.00	0.00	
+10030109	Tip in	At deceleration	Torque smoothness	DRIVE	1.000	0	-7.77	0.00	0.00	
+10030117	Tip in	At deceleration	Acceleration disturbances	DRIVE	3.000	0	-7.77	0.00	0.00	
+10030121	Tip in	At deceleration	Acceleration disturbances LF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10030122	Tip in	At deceleration	Acceleration disturbances HF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10030189	Tip in	At deceleration	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10030200	Tip in	At constant speed / acceleration		DRIVE	3.000	0	-7.77	0.00	0.00	
+10030202	Tip in	At constant speed / acceleration	Response delay	DRIVE	3.000	0	-7.77	0.00	0.00	
+10030220	Tip in	At constant speed / acceleration	Ax increase	DRIVE	3.000	0	-7.77	0.00	0.00	
+10030205	Tip in	At constant speed / acceleration	Stumble	DRIVE	1.000	0	-7.77	0.00	0.00	
+10030210	Tip in	At constant speed / acceleration	Bump	DRIVE	4.000	0	-7.77	0.00	0.00	
+10030260	Tip in	At constant speed / acceleration	Steadiness	DRIVE	0.000	0	-7.77	0.00	0.00	
+10030204	Tip in	At constant speed / acceleration	Kick	DRIVE	4.000	0	-7.77	0.00	0.00	
+10030201	Tip in	At constant speed / acceleration	Jerks	DRIVE	5.000	0	-7.77	0.00	0.00	
+10030207	Tip in	At constant speed / acceleration	Absolute torque	DRIVE	1.000	0	-7.77	0.00	0.00	
+10030258	Tip in	At constant speed / acceleration	Agility	DRIVE	1.000	0	-7.77	0.00	0.00	
+10030209	Tip in	At constant speed / acceleration	Torque smoothness	DRIVE	1.000	0	-7.77	0.00	0.00	
+10030217	Tip in	At constant speed / acceleration	Acceleration disturbances	DRIVE	3.000	0	-7.77	0.00	0.00	
+10030221	Tip in	At constant speed / acceleration	Acceleration disturbances LF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10030222	Tip in	At constant speed / acceleration	Acceleration disturbances HF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10030289	Tip in	At constant speed / acceleration	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10040000	Tip out			DRIVE	3.000	0	-7.77	0.00	0.00	
+10040300	Tip out	At constant speed / acceleration		DRIVE	4.000	0	-7.77	0.00	0.00	
+10040302	Tip out	At constant speed / acceleration	Response delay	DRIVE	1.000	0	-7.77	0.00	0.00	
+10040314	Tip out	At constant speed / acceleration	Acceleration overshoot	DRIVE	4.000	0	-7.77	0.00	0.00	
+10040313	Tip out	At constant speed / acceleration	Bump	DRIVE	2.000	0	-7.77	0.00	0.00	
+10040360	Tip out	At constant speed / acceleration	Steadiness	DRIVE	0.000	0	-7.77	0.00	0.00	
+10040304	Tip out	At constant speed / acceleration	Kick	DRIVE	3.000	0	-7.77	0.00	0.00	
+10040301	Tip out	At constant speed / acceleration	Jerks	DRIVE	5.000	0	-7.77	0.00	0.00	
+10040317	Tip out	At constant speed / acceleration	Acceleration disturbances	DRIVE	3.000	0	-7.77	0.00	0.00	
+10040321	Tip out	At constant speed / acceleration	Acceleration disturbances LF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10040322	Tip out	At constant speed / acceleration	Acceleration disturbances HF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10040389	Tip out	At constant speed / acceleration	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10040400	Tip out	At deceleration		DRIVE	0.000	0	-7.77	0.00	0.00	
+10040402	Tip out	At deceleration	Response delay	DRIVE	1.000	0	-7.77	0.00	0.00	
+10040414	Tip out	At deceleration	Acceleration overshoot	DRIVE	4.000	0	-7.77	0.00	0.00	
+10040413	Tip out	At deceleration	Bump	DRIVE	2.000	0	-7.77	0.00	0.00	
+10040460	Tip out	At deceleration	Steadiness	DRIVE	0.000	0	-7.77	0.00	0.00	
+10040404	Tip out	At deceleration	Kick	DRIVE	3.000	0	-7.77	0.00	0.00	
+10040401	Tip out	At deceleration	Jerks	DRIVE	5.000	0	-7.77	0.00	0.00	
+10040417	Tip out	At deceleration	Acceleration disturbances	DRIVE	3.000	0	-7.77	0.00	0.00	
+10040421	Tip out	At deceleration	Acceleration disturbances LF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10040422	Tip out	At deceleration	Acceleration disturbances HF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10040489	Tip out	At deceleration	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10070000	Deceleration			DRIVE	1.000	5	7.22	6.54	9.70	0.906
+10070500	Deceleration	Without brake		DRIVE	4.000	3	7.07	6.54	9.70	0.222
+10070510	Deceleration	Without brake	Surge	DRIVE	0.000	3	8.57	8.47	8.67	0.085
+10070506	Deceleration	Without brake	Expected deceleration weaker	DRIVE	2.000	3	-7.77	0.00	0.00	0.000
+10070512	Deceleration	Without brake	Reference deceleration weaker	DRIVE	1.000	3	-7.77	0.00	0.00	0.000
+10070516	Deceleration	Without brake	Expected deceleration stronger	DRIVE	2.000	3	-7.77	0.00	0.00	0.000
+10070517	Deceleration	Without brake	Reference deceleration stronger	DRIVE	1.000	3	-7.77	0.00	0.00	0.000
+10070515	Deceleration	Without brake	Acceleration steps	DRIVE	2.000	3	9.58	9.48	9.70	0.094
+10070518	Deceleration	Without brake	Acceleration disturbances	DRIVE	3.000	3	6.78	6.54	7.11	0.238
+10070519	Deceleration	Without brake	Acceleration disturbances LF	DRIVE	0.000	3	8.33	8.18	8.60	0.178
+10070520	Deceleration	Without brake	Acceleration disturbances HF	DRIVE	0.000	3	7.14	6.75	7.78	0.435
+10070589	Deceleration	Without brake	Operation mode parameters	DRIVE	0.000	3	-7.77	0.00	0.00	0.000
+10070100	Deceleration	Transition to constant speed		DRIVE	2.000	2	8.03	6.65	9.41	0.830
+10070102	Deceleration	Transition to constant speed	Transition shock	DRIVE	5.000	2	9.13	8.97	9.41	0.226
+10070103	Deceleration	Transition to constant speed	Transition surge	DRIVE	5.000	2	9.01	8.91	9.15	0.122
+10070118	Deceleration	Transition to constant speed	Acceleration disturbances	DRIVE	3.000	2	7.12	6.65	8.87	1.285
+10070119	Deceleration	Transition to constant speed	Acceleration disturbances LF	DRIVE	0.000	2	7.19	6.73	8.98	1.304
+10070120	Deceleration	Transition to constant speed	Acceleration disturbances HF	DRIVE	0.000	2	9.81	9.76	9.89	0.065
+10070189	Deceleration	Transition to constant speed	Operation mode parameters	DRIVE	0.000	2	-7.77	0.00	0.00	0.000
+10071000	Deceleration	Constant Brake		DRIVE	4.000	0	-7.77	0.00	0.00	
+10071010	Deceleration	Constant Brake	Surge	DRIVE	4.000	0	-7.77	0.00	0.00	
+10071015	Deceleration	Constant Brake	Acceleration steps	DRIVE	2.000	0	-7.77	0.00	0.00	
+10071018	Deceleration	Constant Brake	Acceleration disturbances	DRIVE	3.000	0	-7.77	0.00	0.00	
+10071019	Deceleration	Constant Brake	Acceleration disturbances LF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10071020	Deceleration	Constant Brake	Acceleration disturbances HF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10071089	Deceleration	Constant Brake	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10070300	Deceleration	Brake increase		DRIVE	0.000	0	-7.77	0.00	0.00	
+10070301	Deceleration	Brake increase	Response	DRIVE	3.000	0	-7.77	0.00	0.00	
+10070302	Deceleration	Brake increase	Kick	DRIVE	4.000	0	-7.77	0.00	0.00	
+10070303	Deceleration	Brake increase	Jerks	DRIVE	5.000	0	-7.77	0.00	0.00	
+10070304	Deceleration	Brake increase	Steadiness	DRIVE	2.000	0	-7.77	0.00	0.00	
+10070389	Deceleration	Brake increase	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10071300	Deceleration	Brake decrease		DRIVE	0.000	0	-7.77	0.00	0.00	
+10071301	Deceleration	Brake decrease	Response	DRIVE	3.000	0	-7.77	0.00	0.00	
+10071302	Deceleration	Brake decrease	Kick	DRIVE	4.000	0	-7.77	0.00	0.00	
+10071303	Deceleration	Brake decrease	Jerks	DRIVE	5.000	0	-7.77	0.00	0.00	
+10071304	Deceleration	Brake decrease	Steadiness	DRIVE	2.000	0	-7.77	0.00	0.00	
+10071389	Deceleration	Brake decrease	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10071400	Deceleration	Coast down		DRIVE	0.000	0	-7.77	0.00	0.00	
+10071489	Deceleration	Coast down	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10090000	Gear shift			DRIVE	4.000	0	-7.77	0.00	0.00	
+10092300	Gear shift	Power-on upshift		DRIVE	3.000	0	-7.77	0.00	0.00	
+10092323	Gear shift	Power-on upshift	Ax gradients before ratio change	DRIVE	2.000	0	-7.77	0.00	0.00	
+10092310	Gear shift	Power-on upshift	Traction reduction	DRIVE	2.000	0	-7.77	0.00	0.00	
+10092324	Gear shift	Power-on upshift	Ax gradients during ratio change	DRIVE	2.000	0	-7.77	0.00	0.00	
+10092356	Gear shift	Power-on upshift	Steadiness	DRIVE	0.000	0	-7.77	0.00	0.00	
+10092302	Gear shift	Power-on upshift	Shock	DRIVE	4.000	0	-7.77	0.00	0.00	
+10092303	Gear shift	Power-on upshift	Kick	DRIVE	1.000	0	-7.77	0.00	0.00	
+10092304	Gear shift	Power-on upshift	Jerks	DRIVE	2.000	0	-7.77	0.00	0.00	
+10092326	Gear shift	Power-on upshift	Shift delay	DRIVE	0.000	0	-7.77	0.00	0.00	
+10092305	Gear shift	Power-on upshift	Speed decrease	DRIVE	0.000	0	-7.77	0.00	0.00	
+10092301	Gear shift	Power-on upshift	Shift duration	DRIVE	1.000	0	-7.77	0.00	0.00	
+10092341	Gear shift	Power-on upshift	Acceleration disturbances	DRIVE	3.000	0	-7.77	0.00	0.00	
+10092321	Gear shift	Power-on upshift	Acceleration disturbances LF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10092322	Gear shift	Power-on upshift	Acceleration disturbances HF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10092389	Gear shift	Power-on upshift	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10092500	Gear shift	Tip out upshift		DRIVE	1.000	0	-7.77	0.00	0.00	
+10092544	Gear shift	Tip out upshift	Traction reduction	DRIVE	3.000	0	-7.77	0.00	0.00	
+10092506	Gear shift	Tip out upshift	Deceleration characteristic	DRIVE	2.000	0	-7.77	0.00	0.00	
+10092556	Gear shift	Tip out upshift	Steadiness	DRIVE	3.000	0	-7.77	0.00	0.00	
+10092502	Gear shift	Tip out upshift	Shock	DRIVE	5.000	0	-7.77	0.00	0.00	
+10092503	Gear shift	Tip out upshift	Kick	DRIVE	2.000	0	-7.77	0.00	0.00	
+10092504	Gear shift	Tip out upshift	Jerks	DRIVE	2.000	0	-7.77	0.00	0.00	
+10092526	Gear shift	Tip out upshift	Shift delay	DRIVE	0.000	0	-7.77	0.00	0.00	
+10092505	Gear shift	Tip out upshift	Speed decrease	DRIVE	0.000	0	-7.77	0.00	0.00	
+10092501	Gear shift	Tip out upshift	Shift duration	DRIVE	1.000	0	-7.77	0.00	0.00	
+10092541	Gear shift	Tip out upshift	Acceleration disturbances	DRIVE	3.000	0	-7.77	0.00	0.00	
+10092521	Gear shift	Tip out upshift	Acceleration disturbances LF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10092522	Gear shift	Tip out upshift	Acceleration disturbances HF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10092589	Gear shift	Tip out upshift	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10098200	Gear shift	Tip in upshift		DRIVE	1.000	0	-7.77	0.00	0.00	
+10098203	Gear shift	Tip in upshift	Ax gradients during ratio change	DRIVE	2.000	0	-7.77	0.00	0.00	
+10098204	Gear shift	Tip in upshift	Traction reduction	DRIVE	2.000	0	-7.77	0.00	0.00	
+10098205	Gear shift	Tip in upshift	Response delay	DRIVE	3.000	0	-7.77	0.00	0.00	
+10098244	Gear shift	Tip in upshift	Ax increase	DRIVE	3.000	0	-7.77	0.00	0.00	
+10098224	Gear shift	Tip in upshift	Ax gradients after ratio change	DRIVE	2.000	0	-7.77	0.00	0.00	
+10098220	Gear shift	Tip in upshift	Steadiness	DRIVE	3.000	0	-7.77	0.00	0.00	
+10098211	Gear shift	Tip in upshift	Shock	DRIVE	5.000	0	-7.77	0.00	0.00	
+10098212	Gear shift	Tip in upshift	Kick	DRIVE	2.000	0	-7.77	0.00	0.00	
+10098213	Gear shift	Tip in upshift	Jerks	DRIVE	2.000	0	-7.77	0.00	0.00	
+10098226	Gear shift	Tip in upshift	Shift delay	DRIVE	1.000	0	-7.77	0.00	0.00	
+10098216	Gear shift	Tip in upshift	Speed decrease	DRIVE	1.000	0	-7.77	0.00	0.00	
+10098217	Gear shift	Tip in upshift	Shift duration	DRIVE	1.000	0	-7.77	0.00	0.00	
+10098241	Gear shift	Tip in upshift	Acceleration disturbances	DRIVE	3.000	0	-7.77	0.00	0.00	
+10098221	Gear shift	Tip in upshift	Acceleration disturbances LF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10098222	Gear shift	Tip in upshift	Acceleration disturbances HF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10098289	Gear shift	Tip in upshift	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10098400	Gear shift	Load reversal upshift		DRIVE	1.000	0	-7.77	0.00	0.00	
+10098426	Gear shift	Load reversal upshift	Shift delay	DRIVE	0.000	0	-7.77	0.00	0.00	
+10098402	Gear shift	Load reversal upshift	Speed decrease	DRIVE	0.000	0	-7.77	0.00	0.00	
+10098403	Gear shift	Load reversal upshift	Shift duration	DRIVE	1.000	0	-7.77	0.00	0.00	
+10098406	Gear shift	Load reversal upshift	Steadiness	DRIVE	0.000	0	-7.77	0.00	0.00	
+10098408	Gear shift	Load reversal upshift	Acceleration disturbances	DRIVE	3.000	0	-7.77	0.00	0.00	
+10098421	Gear shift	Load reversal upshift	Acceleration disturbances LF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10098422	Gear shift	Load reversal upshift	Acceleration disturbances HF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10098489	Gear shift	Load reversal upshift	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10092100	Gear shift	Coast / brake-on upshift		DRIVE	1.000	0	-7.77	0.00	0.00	
+10092123	Gear shift	Coast / brake-on upshift	Ax gradients during ratio change	DRIVE	2.000	0	-7.77	0.00	0.00	
+10092110	Gear shift	Coast / brake-on upshift	Traction reduction	DRIVE	3.000	0	-7.77	0.00	0.00	
+10092124	Gear shift	Coast / brake-on upshift	Ax gradients after ratio change	DRIVE	2.000	0	-7.77	0.00	0.00	
+10092111	Gear shift	Coast / brake-on upshift	Deceleration characteristic	DRIVE	2.000	0	-7.77	0.00	0.00	
+10092156	Gear shift	Coast / brake-on upshift	Steadiness	DRIVE	0.000	0	-7.77	0.00	0.00	
+10092102	Gear shift	Coast / brake-on upshift	Shock	DRIVE	5.000	0	-7.77	0.00	0.00	
+10092103	Gear shift	Coast / brake-on upshift	Kick	DRIVE	2.000	0	-7.77	0.00	0.00	
+10092104	Gear shift	Coast / brake-on upshift	Jerks	DRIVE	2.000	0	-7.77	0.00	0.00	
+10092126	Gear shift	Coast / brake-on upshift	Shift delay	DRIVE	0.000	0	-7.77	0.00	0.00	
+10092105	Gear shift	Coast / brake-on upshift	Speed decrease	DRIVE	0.000	0	-7.77	0.00	0.00	
+10092101	Gear shift	Coast / brake-on upshift	Shift duration	DRIVE	1.000	0	-7.77	0.00	0.00	
+10092141	Gear shift	Coast / brake-on upshift	Acceleration disturbances	DRIVE	3.000	0	-7.77	0.00	0.00	
+10092121	Gear shift	Coast / brake-on upshift	Acceleration disturbances LF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10092122	Gear shift	Coast / brake-on upshift	Acceleration disturbances HF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10092189	Gear shift	Coast / brake-on upshift	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10093200	Gear shift	Power-on downshift		DRIVE	1.000	0	-7.77	0.00	0.00	
+10093223	Gear shift	Power-on downshift	Ax gradients during ratio change	DRIVE	2.000	0	-7.77	0.00	0.00	
+10093210	Gear shift	Power-on downshift	Traction reduction	DRIVE	3.000	0	-7.77	0.00	0.00	
+10093224	Gear shift	Power-on downshift	Ax gradients after ratio change	DRIVE	2.000	0	-7.77	0.00	0.00	
+10093212	Gear shift	Power-on downshift	Shift characteristic	DRIVE	0.000	0	-7.77	0.00	0.00	
+10093256	Gear shift	Power-on downshift	Steadiness	DRIVE	3.000	0	-7.77	0.00	0.00	
+10093216	Gear shift	Power-on downshift	Shock	DRIVE	4.000	0	-7.77	0.00	0.00	
+10093203	Gear shift	Power-on downshift	Kick	DRIVE	2.000	0	-7.77	0.00	0.00	
+10093204	Gear shift	Power-on downshift	Jerks	DRIVE	2.000	0	-7.77	0.00	0.00	
+10093226	Gear shift	Power-on downshift	Shift delay	DRIVE	0.000	0	-7.77	0.00	0.00	
+10093205	Gear shift	Power-on downshift	Speed increase	DRIVE	0.000	0	-7.77	0.00	0.00	
+10093201	Gear shift	Power-on downshift	Shift duration	DRIVE	3.000	0	-7.77	0.00	0.00	
+10093241	Gear shift	Power-on downshift	Acceleration disturbances	DRIVE	3.000	0	-7.77	0.00	0.00	
+10093221	Gear shift	Power-on downshift	Acceleration disturbances LF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10093222	Gear shift	Power-on downshift	Acceleration disturbances HF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10093289	Gear shift	Power-on downshift	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10098100	Gear shift	Tip out downshift		DRIVE	1.000	0	-7.77	0.00	0.00	
+10098144	Gear shift	Tip out downshift	Traction reduction	DRIVE	3.000	0	-7.77	0.00	0.00	
+10098113	Gear shift	Tip out downshift	Steadiness	DRIVE	3.000	0	-7.77	0.00	0.00	
+10098104	Gear shift	Tip out downshift	Shock	DRIVE	5.000	0	-7.77	0.00	0.00	
+10098105	Gear shift	Tip out downshift	Kick	DRIVE	2.000	0	-7.77	0.00	0.00	
+10098106	Gear shift	Tip out downshift	Jerks	DRIVE	2.000	0	-7.77	0.00	0.00	
+10098126	Gear shift	Tip out downshift	Shift delay	DRIVE	1.000	0	-7.77	0.00	0.00	
+10098109	Gear shift	Tip out downshift	Speed increase	DRIVE	1.000	0	-7.77	0.00	0.00	
+10098110	Gear shift	Tip out downshift	Shift duration	DRIVE	1.000	0	-7.77	0.00	0.00	
+10098141	Gear shift	Tip out downshift	Acceleration disturbances	DRIVE	3.000	0	-7.77	0.00	0.00	
+10098121	Gear shift	Tip out downshift	Acceleration disturbances LF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10098122	Gear shift	Tip out downshift	Acceleration disturbances HF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10098189	Gear shift	Tip out downshift	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10093100	Gear shift	Kick down / tip in downshift		DRIVE	2.000	0	-7.77	0.00	0.00	
+10093123	Gear shift	Kick down / tip in downshift	Ax gradients during ratio change	DRIVE	2.000	0	-7.77	0.00	0.00	
+10093110	Gear shift	Kick down / tip in downshift	Traction reduction	DRIVE	2.000	0	-7.77	0.00	0.00	
+10093156	Gear shift	Kick down / tip in downshift	Response delay	DRIVE	0.000	0	-7.77	0.00	0.00	
+10093144	Gear shift	Kick down / tip in downshift	Ax increase	DRIVE	0.000	0	-7.77	0.00	0.00	
+10093124	Gear shift	Kick down / tip in downshift	Ax gradients after ratio change	DRIVE	1.000	0	-7.77	0.00	0.00	
+10093112	Gear shift	Kick down / tip in downshift	Shift characteristic	DRIVE	0.000	0	-7.77	0.00	0.00	
+10093159	Gear shift	Kick down / tip in downshift	Steadiness	DRIVE	3.000	0	-7.77	0.00	0.00	
+10093102	Gear shift	Kick down / tip in downshift	Shock	DRIVE	3.000	0	-7.77	0.00	0.00	
+10093103	Gear shift	Kick down / tip in downshift	Kick	DRIVE	1.000	0	-7.77	0.00	0.00	
+10093104	Gear shift	Kick down / tip in downshift	Jerks	DRIVE	1.000	0	-7.77	0.00	0.00	
+10093126	Gear shift	Kick down / tip in downshift	Shift delay	DRIVE	0.000	0	-7.77	0.00	0.00	
+10093105	Gear shift	Kick down / tip in downshift	Speed increase	DRIVE	0.000	0	-7.77	0.00	0.00	
+10093101	Gear shift	Kick down / tip in downshift	Shift duration	DRIVE	3.000	0	-7.77	0.00	0.00	
+10093115	Gear shift	Kick down / tip in downshift	Engine speed at engagement	DRIVE	0.000	0	-7.77	0.00	0.00	
+10093141	Gear shift	Kick down / tip in downshift	Acceleration disturbances	DRIVE	3.000	0	-7.77	0.00	0.00	
+10093121	Gear shift	Kick down / tip in downshift	Acceleration disturbances LF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10093122	Gear shift	Kick down / tip in downshift	Acceleration disturbances HF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10093189	Gear shift	Kick down / tip in downshift	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10098300	Gear shift	Load reversal downshift		DRIVE	1.000	0	-7.77	0.00	0.00	
+10098326	Gear shift	Load reversal downshift	Shift delay	DRIVE	0.000	0	-7.77	0.00	0.00	
+10098302	Gear shift	Load reversal downshift	Speed increase	DRIVE	0.000	0	-7.77	0.00	0.00	
+10098303	Gear shift	Load reversal downshift	Shift duration	DRIVE	3.000	0	-7.77	0.00	0.00	
+10098306	Gear shift	Load reversal downshift	Steadiness	DRIVE	3.000	0	-7.77	0.00	0.00	
+10098307	Gear shift	Load reversal downshift	Acceleration disturbances	DRIVE	3.000	0	-7.77	0.00	0.00	
+10098321	Gear shift	Load reversal downshift	Acceleration disturbances LF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10098322	Gear shift	Load reversal downshift	Acceleration disturbances HF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10098389	Gear shift	Load reversal downshift	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10093400	Gear shift	Coast / brake-on downshift		DRIVE	3.000	0	-7.77	0.00	0.00	
+10093423	Gear shift	Coast / brake-on downshift	Ax gradients before ratio change	DRIVE	2.000	0	-7.77	0.00	0.00	
+10093410	Gear shift	Coast / brake-on downshift	Traction reduction	DRIVE	3.000	0	-7.77	0.00	0.00	
+10093424	Gear shift	Coast / brake-on downshift	Ax gradients during ratio change	DRIVE	2.000	0	-7.77	0.00	0.00	
+10093459	Gear shift	Coast / brake-on downshift	Steadiness	DRIVE	3.000	0	-7.77	0.00	0.00	
+10093402	Gear shift	Coast / brake-on downshift	Shock	DRIVE	5.000	0	-7.77	0.00	0.00	
+10093403	Gear shift	Coast / brake-on downshift	Kick	DRIVE	2.000	0	-7.77	0.00	0.00	
+10093404	Gear shift	Coast / brake-on downshift	Jerks	DRIVE	2.000	0	-7.77	0.00	0.00	
+10093426	Gear shift	Coast / brake-on downshift	Shift delay	DRIVE	0.000	0	-7.77	0.00	0.00	
+10093405	Gear shift	Coast / brake-on downshift	Speed increase	DRIVE	0.000	0	-7.77	0.00	0.00	
+10093401	Gear shift	Coast / brake-on downshift	Shift duration	DRIVE	1.000	0	-7.77	0.00	0.00	
+10093441	Gear shift	Coast / brake-on downshift	Acceleration disturbances	DRIVE	3.000	0	-7.77	0.00	0.00	
+10093421	Gear shift	Coast / brake-on downshift	Acceleration disturbances LF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10093422	Gear shift	Coast / brake-on downshift	Acceleration disturbances HF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10093489	Gear shift	Coast / brake-on downshift	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10097800	Gear shift	Maneuvering		DRIVE	2.000	0	-7.77	0.00	0.00	
+10097801	Gear shift	Maneuvering	Bump	DRIVE	0.000	0	-7.77	0.00	0.00	
+10097803	Gear shift	Maneuvering	Delay	DRIVE	2.000	0	-7.77	0.00	0.00	
+10097812	Gear shift	Maneuvering	Jerks	DRIVE	2.000	0	-7.77	0.00	0.00	
+10097813	Gear shift	Maneuvering	Acceleration disturbances	DRIVE	3.000	0	-7.77	0.00	0.00	
+10097821	Gear shift	Maneuvering	Acceleration disturbances LF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10097822	Gear shift	Maneuvering	Acceleration disturbances HF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10097889	Gear shift	Maneuvering	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10097900	Gear shift	Selector lever change		DRIVE	2.000	0	-7.77	0.00	0.00	
+10097907	Gear shift	Selector lever change	Bump	DRIVE	4.000	0	-7.77	0.00	0.00	
+10097912	Gear shift	Selector lever change	Acceleration disturbances	DRIVE	3.000	0	-7.77	0.00	0.00	
+10097921	Gear shift	Selector lever change	Acceleration disturbances LF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10097922	Gear shift	Selector lever change	Acceleration disturbances HF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10097989	Gear shift	Selector lever change	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10080000	Constant speed			DRIVE	2.000	0	-7.77	0.00	0.00	
+10080200	Constant speed	Without load		DRIVE	2.000	0	-7.77	0.00	0.00	
+10080201	Constant speed	Without load	Engine speed fluctuations	DRIVE	2.000	0	-7.77	0.00	0.00	
+10080202	Constant speed	Without load	Surge	DRIVE	5.000	0	-7.77	0.00	0.00	
+10080211	Constant speed	Without load	Correlation	DRIVE	2.000	0	-7.77	0.00	0.00	
+10080203	Constant speed	Without load	Vehicle speed	DRIVE	0.000	0	-7.77	0.00	0.00	
+10080208	Constant speed	Without load	Acceleration disturbances	DRIVE	3.000	0	-7.77	0.00	0.00	
+10080209	Constant speed	Without load	Acceleration disturbances LF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10080210	Constant speed	Without load	Acceleration disturbances HF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10080289	Constant speed	Without load	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10080100	Constant speed	Constant load		DRIVE	4.000	0	-7.77	0.00	0.00	
+10080101	Constant speed	Constant load	Engine speed fluctuations	DRIVE	2.000	0	-7.77	0.00	0.00	
+10080102	Constant speed	Constant load	Surge	DRIVE	5.000	0	-7.77	0.00	0.00	
+10080117	Constant speed	Constant load	Correlation	DRIVE	2.000	0	-7.77	0.00	0.00	
+10080114	Constant speed	Constant load	Acceleration disturbances	DRIVE	3.000	0	-7.77	0.00	0.00	
+10080115	Constant speed	Constant load	Acceleration disturbances LF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10080116	Constant speed	Constant load	Acceleration disturbances HF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10080189	Constant speed	Constant load	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10450000	Vehicle stationary			DRIVE	1.000	0	-7.77	0.00	0.00	
+10451400	Vehicle stationary	Vehicle stop		DRIVE	1.000	0	-7.77	0.00	0.00	
+10451405	Vehicle stationary	Vehicle stop	Acceleration increase	DRIVE	5.000	0	-7.77	0.00	0.00	
+10451401	Vehicle stationary	Vehicle stop	Acceleration decrease	DRIVE	5.000	0	-7.77	0.00	0.00	
+10451411	Vehicle stationary	Vehicle stop	Acceleration disturbances	DRIVE	3.000	0	-7.77	0.00	0.00	
+10451413	Vehicle stationary	Vehicle stop	Acceleration disturbances LF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10451414	Vehicle stationary	Vehicle stop	Acceleration disturbances HF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10451489	Vehicle stationary	Vehicle stop	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10451500	Vehicle stationary	Vehicle at standstill		DRIVE	0.000	0	-7.77	0.00	0.00	
+10451512	Vehicle stationary	Vehicle at standstill	Acceleration disturbances	DRIVE	3.000	0	-7.77	0.00	0.00	
+10451513	Vehicle stationary	Vehicle at standstill	Acceleration disturbances LF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10451514	Vehicle stationary	Vehicle at standstill	Acceleration disturbances HF	DRIVE	0.000	0	-7.77	0.00	0.00	
+10451589	Vehicle stationary	Vehicle at standstill	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10290000	Custom event			DRIVE	0.000	0	-7.77	0.00	0.00	
+10290100	Custom event	1 (CustomEventTrigger1)		DRIVE	5.000	0	-7.77	0.00	0.00	
+10290105	Custom event	1 (CustomEventTrigger1)	Trigger settings	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290101	Custom event	1 (CustomEventTrigger1)	Acceleration values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290102	Custom event	1 (CustomEventTrigger1)	Vehicle speed values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290103	Custom event	1 (CustomEventTrigger1)	Engine speed values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290189	Custom event	1 (CustomEventTrigger1)	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10290200	Custom event	2 (CustomEventTrigger2)		DRIVE	5.000	0	-7.77	0.00	0.00	
+10290205	Custom event	2 (CustomEventTrigger2)	Trigger settings	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290201	Custom event	2 (CustomEventTrigger2)	Acceleration values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290202	Custom event	2 (CustomEventTrigger2)	Vehicle speed values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290203	Custom event	2 (CustomEventTrigger2)	Engine speed values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290289	Custom event	2 (CustomEventTrigger2)	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10290300	Custom event	3 (CustomEventTrigger3)		DRIVE	5.000	0	-7.77	0.00	0.00	
+10290305	Custom event	3 (CustomEventTrigger3)	Trigger settings	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290301	Custom event	3 (CustomEventTrigger3)	Acceleration values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290302	Custom event	3 (CustomEventTrigger3)	Vehicle speed values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290303	Custom event	3 (CustomEventTrigger3)	Engine speed values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290389	Custom event	3 (CustomEventTrigger3)	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10290400	Custom event	4 (CustomEventTrigger4)		DRIVE	5.000	0	-7.77	0.00	0.00	
+10290405	Custom event	4 (CustomEventTrigger4)	Trigger settings	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290401	Custom event	4 (CustomEventTrigger4)	Acceleration values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290402	Custom event	4 (CustomEventTrigger4)	Vehicle speed values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290403	Custom event	4 (CustomEventTrigger4)	Engine speed values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290489	Custom event	4 (CustomEventTrigger4)	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10290500	Custom event	5 (CustomEventTrigger5)		DRIVE	5.000	0	-7.77	0.00	0.00	
+10290505	Custom event	5 (CustomEventTrigger5)	Trigger settings	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290501	Custom event	5 (CustomEventTrigger5)	Acceleration values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290502	Custom event	5 (CustomEventTrigger5)	Vehicle speed values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290503	Custom event	5 (CustomEventTrigger5)	Engine speed values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290589	Custom event	5 (CustomEventTrigger5)	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10290600	Custom event	6 (CustomEventTrigger6)		DRIVE	5.000	0	-7.77	0.00	0.00	
+10290605	Custom event	6 (CustomEventTrigger6)	Trigger settings	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290601	Custom event	6 (CustomEventTrigger6)	Acceleration values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290602	Custom event	6 (CustomEventTrigger6)	Vehicle speed values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290603	Custom event	6 (CustomEventTrigger6)	Engine speed values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290689	Custom event	6 (CustomEventTrigger6)	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10290700	Custom event	7 (CustomEventTrigger7)		DRIVE	5.000	0	-7.77	0.00	0.00	
+10290705	Custom event	7 (CustomEventTrigger7)	Trigger settings	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290701	Custom event	7 (CustomEventTrigger7)	Acceleration values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290702	Custom event	7 (CustomEventTrigger7)	Vehicle speed values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290703	Custom event	7 (CustomEventTrigger7)	Engine speed values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290789	Custom event	7 (CustomEventTrigger7)	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10290800	Custom event	8 (CustomEventTrigger8)		DRIVE	5.000	0	-7.77	0.00	0.00	
+10290805	Custom event	8 (CustomEventTrigger8)	Trigger settings	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290801	Custom event	8 (CustomEventTrigger8)	Acceleration values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290802	Custom event	8 (CustomEventTrigger8)	Vehicle speed values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290803	Custom event	8 (CustomEventTrigger8)	Engine speed values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290889	Custom event	8 (CustomEventTrigger8)	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10290900	Custom event	9 (CustomEventTrigger9)		DRIVE	5.000	0	-7.77	0.00	0.00	
+10290905	Custom event	9 (CustomEventTrigger9)	Trigger settings	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290901	Custom event	9 (CustomEventTrigger9)	Acceleration values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290902	Custom event	9 (CustomEventTrigger9)	Vehicle speed values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290903	Custom event	9 (CustomEventTrigger9)	Engine speed values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10290989	Custom event	9 (CustomEventTrigger9)	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	
+10291000	Custom event	10 (CustomEventTrigger10)		DRIVE	5.000	0	-7.77	0.00	0.00	
+10291005	Custom event	10 (CustomEventTrigger10)	Trigger settings	DRIVE	5.000	0	-7.77	0.00	0.00	
+10291001	Custom event	10 (CustomEventTrigger10)	Acceleration values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10291002	Custom event	10 (CustomEventTrigger10)	Vehicle speed values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10291003	Custom event	10 (CustomEventTrigger10)	Engine speed values	DRIVE	5.000	0	-7.77	0.00	0.00	
+10291089	Custom event	10 (CustomEventTrigger10)	Operation mode parameters	DRIVE	0.000	0	-7.77	0.00	0.00	

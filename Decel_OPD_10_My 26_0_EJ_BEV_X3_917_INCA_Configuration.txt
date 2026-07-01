@@ -1,0 +1,252 @@
+COMMENT
+Date Time:	2025-10-20 12:11:41
+Duration[s]:	235
+Drive Version:	4.6.0.197
+Vehicle Attribute(s):	Driveability
+Data-Interface:	INCA
+IDF File:   	C:\Users\Public\Documents\AVLDRIVE_V4.6.0\Vehicle Configuration\My26EJ_BEV_917\My26EJ_BEV_917.idf
+Vehicle:    	My26EJ_BEV_917
+Vehicle Config.:	My26EJ_BEV_917
+Vehicle Class:	Medium
+Propulsion System:	Electric Motor
+Transmission Type:	SST/MST
+Weight File:	T10-weight-medium
+
+TECHNICAL INFORMATION
+Clutch pedal characteristics
+	First torque transfer [%]:	20.000
+	Touchpoint [%]:	50.000
+	Engaged [%]:	80.000
+Resistance coefficients
+	A0 constant [N]:	153.500
+	B0 linear [N / kph]:	0.450
+	C0 square [N / (kph)²]:	0.043
+Vehicle weight
+	Mass [kg]:	2781.400
+Tire
+	Wheel radius [m]:	0.402
+Drivetrain
+	Gear 1 - Ratio [rpm / kph]:	79.235
+	Gear 1 - Gear ratio [-]:	9.184
+	Gear 1 - DPI [-]:	1.000
+	Differential ratio:	1.000
+	Use gear ratio:	Unchecked
+	Number of gears:	1.000
+	Drive:	AWD
+Combustion engine
+	Fuel:	Gasoline
+	Aspiration:	Naturally aspirated
+	Maximum power [kW]:	249.930
+	Engine speed at max. power [rpm]:	6000.000
+	Maximum torque [Nm]:	420.000
+	Engine speed at max. torque [rpm]:	4000.000
+	Displacement [l]:	2.000
+	Number of cylinders [-]:	4.000
+	Idle speed [rpm]:	700.000
+	RPM limiter [rpm]:	30000.000
+Electric motor
+	Maximum power [kW]:	249.930
+	Maximum torque [Nm]:	420.000
+Total system
+	Maximum power [kW]:	500.000
+	Maximum torque [Nm]:	840.000
+
+OPTIONAL CHANNELS
+Signal source
+	Engine speed:	CAN bus
+	Vehicle speed:	CAN bus / Sensor
+Turbine speed
+	Enabled:	Unchecked
+Torque Converter Lock-up Clutch
+	Enabled:	Unchecked
+	Calculate TCC_State:	Unchecked
+	Open:	0
+	Locked:	2
+	Controlled slip:	1
+Neutral idle control
+	Enabled:	Unchecked
+	NIC OFF:	0.000
+	NIC ON:	1.000
+Brake pedal position
+	Enabled:	Checked
+	Calculate brake bit:	Checked
+Optional channels
+	Enable channel 'Kickdown':	Checked
+	Enable channel 'ASR':	Unchecked
+	Enable channel 'AirCondition':	Checked
+	Enable channel 'EngineTemperature':	Checked
+	Enable channel 'ElectricLoad':	Checked
+	Enable WheelSpeed Channels:	Checked
+	Enable channel 'SteeringWheelAngle':	Unchecked
+	Enable channel 'Vehiclespeed_Over_Ground':	Unchecked
+	Enable channel 'Target_Idle_Speed':	Unchecked
+	Enable channel 'Engine_Torque':	Unchecked
+	Enable channel 'Gearbox_Output_Speed':	Unchecked
+	Enable channel 'Gearbox_Output_Speed':	Unchecked
+	Enable channel 'AmbientPressure':	Unchecked
+	Enable channel 'AmbientTemperature':	Checked
+	Enable channel 'Transm_Temp':	Unchecked
+	Enable channel 'Brake_Pressure':	Unchecked
+	Enable channel 'BrakeTorque':	Unchecked
+	Enable channel 'Turbine_Torque':	Unchecked
+	Enable channel 'Gearbox_Output_Torque':	Unchecked
+	Enable channel 'Transmission_Diagnosis':	Unchecked
+	Enable channel 'Distance':	Unchecked
+	Enable channel 'RoadGradient':	Unchecked
+	Enable channel 'DrivingMode':	Unchecked
+	Enable channel 'KineticMode':	Unchecked
+	Enable channel 'Testbed_Mode':	Unchecked
+	Enable channel 'Testbed_Shift_Info':	Unchecked
+Sailing
+	Enabled:	Unchecked
+	Active:	
+	Inactive:	
+Engine start - Auto start
+	Enabled:	Unchecked
+	Active:	
+	Inactive:	
+Optional channels for (H)EV
+	Enable channel 'EMTorque':	Checked
+	Enable channel 'BattSOC':	Checked
+	Enable channel 'BattVoltage':	Checked
+	Enable channel 'BattCurrent':	Checked
+	Enable channel 'CrankRequest':	Unchecked
+Road interference compensation
+	Method:	1.000
+	Filter window size [samples]:	16.000
+	Filter threshold [dB]:	1.400
+	Wheelbase [mm]:	3000.000
+	Sensor position FL [-]:	0.800
+	Sensor position RR [-]:	0.800
+	X limit compensation [m/²]:	0.300
+	Z limit compensation (1 Sensor) [m/s²]:	0.650
+	Z limit compensation [m/s²]:	0.700
+	X limit detection [m/s²]:	1.300
+	Z limit detection (1 Sensor) [m/s²]:	2.700
+	Z limit detection [m/s²]:	2.700
+	Detection factor [-]:	0.750
+Cylinder deactivation
+	Enabled:	Unchecked
+	Cylinder deactivated:	3.000
+	Cylinder activated:	1.000
+	Transition to deactivation:	2.000
+	Transition to activation:	4.000
+Long. Acceleration input settings
+	Enable channel 'Testbed_Torque':	Unchecked
+	Enable channel 'Testbed_Force':	Unchecked
+	Copy 'AccelerationChassis' to 'AccelerationSeat':	Checked
+Optional Gearbox Trigger settings
+	Enable channel 'GearEngagedDMU':	Unchecked
+	Enable channel 'Input_Shaft_Speed_x':	Unchecked
+	Enable channel 'Preselected_Gear':	Unchecked
+	Enable channel 'Gearbox_State':	Unchecked
+	State Neutral [-]:	0.000
+	State Engaged [-]:	0.000
+	Enable channel 'Gear_Tap_up' 'Gear_Tap_Down':	Unchecked
+	Creep speed [kph]:	3.000
+	Brake pressure threshold [bar]:	5.000
+	Use channel 'Engine_Torque' for gearshift classification:	Unchecked
+Assessment of Noise & Vibration
+	Noise:	Inactive
+	Vibration:	Inactive
+
+SIGNAL CALIBRATION
+Chassis - longitudinal acceleration signal
+	Offset [m/s²]:	-0.019
+	Direction factor:	1.000
+Chassis - lateral acceleration signal
+	Offset [m/s²]:	0.313
+	Direction factor:	1.000
+Chassis - vertical acceleration signal
+	Offset [m/s²]:	0.003
+	Direction factor:	1.000
+Seat - longitudinal acceleration signal
+	Offset [m/s²]:	0.000
+	Direction factor:	1.000
+Clutch pedal
+	Released (100 %):	100.000
+	Fully applied (0 %):	0.000
+Accelerator pedal
+	Released (0 %):	0.000
+	Fully applied (100 %):	99.560
+Brake pedal
+	Free travel [%]:	1.000
+	Released (0 %):	0.000
+	Fully applied (100 %):	100.000
+State Brake
+	Off:	0.000
+	On:	1.000
+State A/C compressor
+	Off:	0.000
+	On:	2473.000
+
+SIGNAL CALIBRATION AT
+Gear Signal
+	Gear 1 - Commanded:	1.000
+	Reverse 01:	1.000
+Selector Lever
+	Lever P:	1
+	Lever R:	2
+	Lever N:	3
+	Lever D:	4
+	Lever M:	99999
+	Lever S:	99999
+
+OPERATION MODE SETTINGS
+General thresholds
+	Zero accelerator pedal [%]:	1.000
+	Zero vehicle speed [kph]:	1.000
+	Full load accelerator pedal [%]:	110.000
+	Kickdown accelerator pedal [%]:	98.000
+Selective operation mode detection
+	Lateral acceleration:	Unchecked
+	Lateral acceleration threshold [m/s²]:	3.000
+	Wheel slip:	Checked
+	Wheel slip threshold [%]:	20.000
+	ASR:	Unchecked
+	Signal 'DiscardEvent':	Unchecked
+	Signal 'DiscardEvent' threshold [-]:	1.000
+	Signal 'DiscardEvent' tolerance [s]:	0.000
+	Road interference detection:	0.000
+Performance
+	Vehicle speed range 1 v start [kph]:	60.000
+	Vehicle speed range 1 v end [kph]:	100.000
+	Vehicle speed range 2 v start [kph]:	80.000
+	Vehicle speed range 2 v end [kph]:	120.000
+	Vehicle speed range 3 v start [kph]:	100.000
+	Vehicle speed range 3 v end [kph]:	160.000
+	Vehicle speed range 4 v start [kph]:
+	Vehicle speed range 4 v end [kph]:
+	Vehicle speed range 5 v start [kph]:
+	Vehicle speed range 5 v end [kph]:
+	Performance class:	2 (Low - Medium: 11.6 - 19.5 kg/kW)
+	Automatic assignment:	Unchecked
+Constant speed
+	Accelerator pedal variation [%]:	4.000
+	Vehicle speed variation [kph]:	3.000
+Deceleration - Transition to constant speed
+	Engine speed threshold [rpm]:	1123.000
+	Vehicle speed threshold [kph]:	11.000
+	Highest creeping gear:	3.000
+Drive away - Rolling start
+	Lower vehicle speed threshold [kph]:	12.000
+	Delta vehicle speed [kph]:	10.000
+Drive away - Hill start
+	Road gradient [%]:	5.000
+Gearshift - Power-on downshift
+	Minimum intermediate gear duration [s]:	0.200
+Gearshift - Coast/brake-on downshift
+	Minimum intermediate gear duration [s]:	0.100
+Gear shift - Ratio change detection
+	Detection enabled:	Checked
+Tip in / Tip out - Accelerator pedal threshold
+	Minimum pedal rate [%/s]:	150.000
+TCC control
+	Enhanced event detection:	Unchecked
+
+MEASUREMENT CONDITIONS
+	Payload [kg]:	150.000
+	Ambient air pressure [mbar]:	1013.000
+	Ambient air temperature [°C]:	0.000
+	Power reduction factor [-]:	1.000
+	Location:	

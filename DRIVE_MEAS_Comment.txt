@@ -1,0 +1,15 @@
+
+Date Time:	2025-10-20 12:11:17
+Duration[s]:	235
+Drive Version:	4.6.0.197
+Vehicle Attribute(s):	Driveability
+Data-Interface:	INCA
+IDF File:   	C:\Users\Public\Documents\AVLDRIVE_V4.6.0\Vehicle Configuration\My26EJ_BEV_917\My26EJ_BEV_917.idf
+Vehicle:    	My26EJ_BEV_917
+Vehicle Config.:	My26EJ_BEV_917
+Vehicle Class:	Medium
+Propulsion System:	Electric Motor
+Transmission Type:	SST/MST
+Weight File:	T10-weight-medium
+
+Event Collector: BEV_V46_Deceleration incomplete - 1195/1200 events missing
