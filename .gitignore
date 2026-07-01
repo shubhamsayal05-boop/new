@@ -24,5 +24,7 @@ env/
 *.mdf
 *.dat
 *.raw
+*.adt
+*.cdl
 *.xlsx
 *.png

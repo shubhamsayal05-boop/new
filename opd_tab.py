@@ -146,16 +146,10 @@ def render_one_pedal_tab(
     section_header: Callable[..., None],
     resettable_key: Callable[[str], str],
 ) -> None:
-    """Render the One-Pedal Analysis tab (`.mf4` / `.dat` measurement files only)."""
+    """Render the One-Pedal Analysis workspace (`.mf4` / `.dat` measurement files only)."""
 
     file_names = list(measurement_sources.keys())
     has_measurements = bool(measurement_sources)
-
-    section_header(
-        "One-Pedal Deceleration Analysis",
-        "Detect lift-off regen events from ETAS INCA `.mf4` or `.dat` files",
-        icon="car",
-    )
 
     if not has_measurements:
         st.info(

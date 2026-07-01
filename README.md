@@ -1,11 +1,17 @@
-# Vehicle Speed vs Acceleration Plotter
+# DriveLab Pro
 
-Streamlit analytics tool for ETAS INCA **`.mf4`** and **`.dat`** measurement files.
+**DriveLab Pro** is a professional INCA measurement intelligence platform for `.mf4` and `.dat` files. It replaces the original single-page plotter with a modular workspace, dark engineering UI, and built-in **AI Advisor** for issue detection and fix suggestions.
 
-## Features
+## Workspaces
 
-- **Speed vs Acceleration** — launch and deceleration curve extraction, target overlays, metrics, Excel/PNG export
-- **One-Pedal (OPD) Analysis** — lift-off regen event detection, deceleration-vs-speed curves, jerk traces, UN R13-H flags, optional energy recovery KPIs
+| Module | Purpose |
+|--------|---------|
+| **Dashboard** | Session health, KPIs, top diagnostics |
+| **Data Source** | File loading, channel mapping, units |
+| **Speed Analysis** | Launch/decel extraction, plots, metrics |
+| **OPD Analysis** | One-pedal regen events, jerk, R13-H flags |
+| **Reference Data** | Target curves & scatter imports |
+| **AI Advisor** | Rule-based diagnostics + optional OpenAI action plan |
 
 ## Quick start
 
@@ -14,13 +20,19 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-Load measurement files via **Read from local folder** (recommended for large files) or **Upload in browser** (`.mf4` / `.dat` only).
+Use **Read from local folder** for large MF4 files. Map INCA channels on **Data Source**, then run analysis on **Speed Analysis** or **OPD Analysis**.
 
-## Project layout
+## AI Advisor
 
-- `app.py` — main Streamlit application
-- `opd_tab.py` — One-Pedal Analysis tab UI
-- `src/vehicle_plotter/` — processing, plotting, MDF I/O, OPD analytics
+The AI Advisor scans your session automatically and surfaces:
+
+- Missing signal mappings
+- Processing / memory errors
+- Audit failures (no usable segments, low point count)
+- OPD regulatory flags (UN R13-H, brake blending)
+- Stale results after settings changes
+
+Click **Scan session** on the AI Advisor page. Enable **Enhance with OpenAI** and provide an API key (or set `OPENAI_API_KEY` in `.streamlit/secrets.toml`) for a natural-language action plan.
 
 ## Tests
 
