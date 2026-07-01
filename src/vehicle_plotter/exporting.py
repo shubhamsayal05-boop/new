@@ -67,3 +67,30 @@ def export_plot_workbook(
             wide.to_excel(writer, sheet_name="Curves", index=False)
         long_frame.to_excel(writer, sheet_name="Long", index=False)
     return buffer.getvalue()
+
+
+def export_opd_workbook(
+    decel_curves: pd.DataFrame,
+    summary_table: pd.DataFrame,
+    jerk_traces: pd.DataFrame | None = None,
+    speed_unit: str = "KPH",
+    acceleration_unit: str = "m/s^2",
+) -> bytes:
+    """Export OPD decel curves, event summary, and optional jerk traces to Excel."""
+
+    buffer = io.BytesIO()
+    with pd.ExcelWriter(buffer, engine="openpyxl") as writer:
+        if summary_table is not None and not summary_table.empty:
+            summary_table.to_excel(writer, sheet_name="Events", index=False)
+        if decel_curves is not None and not decel_curves.empty:
+            export_cols = decel_curves.copy()
+            export_cols = export_cols.rename(
+                columns={
+                    "speed": f"speed ({speed_unit})",
+                    "acceleration": f"acceleration ({acceleration_unit})",
+                }
+            )
+            export_cols.to_excel(writer, sheet_name="DecelCurves", index=False)
+        if jerk_traces is not None and not jerk_traces.empty:
+            jerk_traces.to_excel(writer, sheet_name="Jerk", index=False)
+    return buffer.getvalue()

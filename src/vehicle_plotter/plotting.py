@@ -264,3 +264,146 @@ def make_random_scatter_figure(
 
     _apply_common_layout(fig, title, x_axis_title, y_axis_title)
     return fig
+
+
+def _opd_event_label(row: pd.Series) -> str:
+    file_name = str(row.get("file_name") or "")
+    event_id = row.get("event_id")
+    target = row.get("target_pedal")
+    group = short_group_label(row.get("group_label"))
+    parts = [part for part in (group, f"{int(target)}%" if pd.notna(target) else "", file_name) if part]
+    if pd.notna(event_id):
+        return f"Event {int(event_id)} | {' | '.join(parts)}"
+    return " | ".join(parts) if parts else "Event"
+
+
+def make_opd_decel_speed_figure(
+    decel_curves: pd.DataFrame,
+    title: str = "One-Pedal Deceleration vs Speed",
+    speed_unit: str = "KPH",
+    acceleration_unit: str = "m/s^2",
+    r13h_threshold_ms2: float = 1.3,
+) -> go.Figure:
+    """Plot deceleration-vs-speed curves for detected OPD events."""
+
+    fig = go.Figure()
+    if decel_curves.empty:
+        _apply_common_layout(
+            fig, title, f"Speed ({speed_unit})", f"Deceleration ({acceleration_unit})"
+        )
+        return fig
+
+    grouped = decel_curves.groupby(["file_name", "event_id", "target_pedal", "group_label"], sort=True)
+    for index, ((file_name, event_id, target_pedal, group_label), curve) in enumerate(grouped):
+        label_row = pd.Series(
+            {
+                "file_name": file_name,
+                "event_id": event_id,
+                "target_pedal": target_pedal,
+                "group_label": group_label,
+            }
+        )
+        color = PEDAL_COLORS.get(int(target_pedal), RANDOM_SCATTER_COLORS[index % len(RANDOM_SCATTER_COLORS)])
+        ordered = curve.sort_values("speed", ascending=False)
+        fig.add_trace(
+            go.Scatter(
+                x=ordered["speed"],
+                y=ordered["acceleration"],
+                mode="lines",
+                name=_opd_event_label(label_row),
+                line=dict(color=color, width=2.25, dash=MODE_DASHES[index % len(MODE_DASHES)]),
+                hovertemplate=(
+                    f"Speed: %{{x:.2f}} {speed_unit}<br>"
+                    f"Accel: %{{y:.3f}} {acceleration_unit}<extra></extra>"
+                ),
+            )
+        )
+
+    fig.add_hline(
+        y=-abs(r13h_threshold_ms2),
+        line_dash="dash",
+        line_color="#E53935",
+        annotation_text=f"UN R13-H ({r13h_threshold_ms2:g} m/s²)",
+        annotation_position="bottom right",
+    )
+    _apply_common_layout(
+        fig, title, f"Speed ({speed_unit})", f"Acceleration ({acceleration_unit})"
+    )
+    return fig
+
+
+def make_opd_jerk_figure(
+    jerk_traces: pd.DataFrame,
+    title: str = "Longitudinal Jerk During OPD Events",
+    acceleration_unit: str = "m/s^2",
+) -> go.Figure:
+    """Plot jerk vs time for each detected OPD event."""
+
+    fig = go.Figure()
+    jerk_unit = f"{acceleration_unit}/s"
+    if jerk_traces.empty:
+        _apply_common_layout(fig, title, "Time (s)", f"Jerk ({jerk_unit})")
+        return fig
+
+    grouped = jerk_traces.groupby(["file_name", "event_id", "target_pedal", "group_label"], sort=True)
+    for index, ((file_name, event_id, target_pedal, group_label), trace) in enumerate(grouped):
+        label_row = pd.Series(
+            {
+                "file_name": file_name,
+                "event_id": event_id,
+                "target_pedal": target_pedal,
+                "group_label": group_label,
+            }
+        )
+        color = PEDAL_COLORS.get(int(target_pedal), RANDOM_SCATTER_COLORS[index % len(RANDOM_SCATTER_COLORS)])
+        ordered = trace.sort_values("time")
+        fig.add_trace(
+            go.Scatter(
+                x=ordered["time"],
+                y=ordered["jerk"],
+                mode="lines",
+                name=_opd_event_label(label_row),
+                line=dict(color=color, width=2.0, dash=MODE_DASHES[index % len(MODE_DASHES)]),
+                hovertemplate=f"Time: %{{x:.2f}} s<br>Jerk: %{{y:.3f}} {jerk_unit}<extra></extra>",
+            )
+        )
+
+    _apply_common_layout(fig, title, "Time (s)", f"Jerk ({jerk_unit})")
+    return fig
+
+
+def make_opd_pedal_trace_figure(
+    time_series: pd.DataFrame,
+    title: str = "Pedal & Brake During OPD Event",
+) -> go.Figure:
+    """Overlay accelerator pedal and brake traces for a selected event window."""
+
+    fig = go.Figure()
+    if time_series.empty:
+        _apply_common_layout(fig, title, "Time (s)", "Position (%)")
+        return fig
+
+    ordered = time_series.sort_values("time")
+    if "pedal" in ordered.columns:
+        fig.add_trace(
+            go.Scatter(
+                x=ordered["time"],
+                y=ordered["pedal"],
+                mode="lines",
+                name="Accelerator pedal",
+                line=dict(color="#43A047", width=2.0),
+            )
+        )
+    if "brake" in ordered.columns:
+        fig.add_trace(
+            go.Scatter(
+                x=ordered["time"],
+                y=ordered["brake"],
+                mode="lines",
+                name="Brake position",
+                line=dict(color="#E53935", width=2.0, dash="dot"),
+            )
+        )
+
+    _apply_common_layout(fig, title, "Time (s)", "Position (%)")
+    return fig

@@ -23,5 +23,6 @@ env/
 *.mf4
 *.mdf
 *.dat
+*.raw
 *.xlsx
 *.png
