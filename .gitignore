@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# Data / exports
+*.mf4
+*.mdf
+*.dat
+*.raw
+*.adt
+*.cdl
+*.xlsx
+*.png
