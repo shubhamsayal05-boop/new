@@ -14,6 +14,13 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
+from .opd_metrics import (
+    OpmMetricSettings,
+    SensitivityAdjustments,
+    analyze_opm_event,
+    build_time_series_record,
+    compute_jerk_trace,
+)
 from .processing import _contiguous_segments, _detect_dominant_pedal
 
 R13H_DECEL_THRESHOLD_MS2 = 1.3
@@ -43,7 +50,17 @@ class OnePedalSettings:
     target_pedal: str = "Auto"
     r13h_threshold_ms2: float = R13H_DECEL_THRESHOLD_MS2
     vehicle_mass_kg: float = 2781.4
+    jerk_comfort_limit_ms3: float = 3.0
+    speed_interval_kph: float = 10.0
     extra: dict = field(default_factory=dict)
+
+    def to_metric_settings(self) -> OpmMetricSettings:
+        return OpmMetricSettings(
+            jerk_comfort_limit_ms3=self.jerk_comfort_limit_ms3,
+            gb21670_brake_lamp_ms2=self.r13h_threshold_ms2,
+            vehicle_mass_kg=self.vehicle_mass_kg,
+            speed_interval_kph=self.speed_interval_kph,
+        )
 
 
 def normalize_opd_frame(
@@ -141,14 +158,8 @@ def _bin_decel_curve(segment: pd.DataFrame, speed_bin: float) -> pd.DataFrame:
     return binned[["speed", "acceleration"]]
 
 
-def _compute_jerk(segment: pd.DataFrame) -> pd.Series:
-    times = pd.to_numeric(segment["time"], errors="coerce")
-    accel = pd.to_numeric(segment["acceleration"], errors="coerce")
-    if len(times) < 2:
-        return pd.Series([np.nan] * len(segment), index=segment.index)
-    dt = times.diff().replace(0, np.nan)
-    jerk = accel.diff() / dt
-    return jerk
+def _compute_jerk(segment: pd.DataFrame, smooth_samples: int = 1) -> pd.Series:
+    return compute_jerk_trace(segment, smooth_samples)
 
 
 def _find_coast_speed(curve: pd.DataFrame) -> float | None:
@@ -208,25 +219,22 @@ def _summarize_event(
     curve: pd.DataFrame,
     settings: OnePedalSettings,
     group_label: str = "",
+    adjustments: SensitivityAdjustments | None = None,
 ) -> dict[str, object]:
+    adj = adjustments or SensitivityAdjustments()
+    metrics = analyze_opm_event(
+        segment,
+        settings.to_metric_settings(),
+        adj,
+        brake_threshold=settings.brake_threshold,
+    )
     times = segment["time"].dropna()
-    speeds = segment["speed"].dropna()
-    accels = segment["acceleration"].dropna()
-    jerk = _compute_jerk(segment)
-    peak_jerk = float(jerk.min()) if jerk.notna().any() else None
-
-    min_accel = float(accels.min()) if not accels.empty else None
-    mean_accel = float(accels.mean()) if not accels.empty else None
-    r13h_violation = bool(min_accel is not None and min_accel <= -settings.r13h_threshold_ms2)
-
-    brake = segment["brake"].dropna()
-    brake_applied = bool((brake > settings.brake_threshold).any()) if not brake.empty else False
-
-    coast_speed = _find_coast_speed(curve)
-    recovery_kwh = _estimate_recovery_kwh(segment, settings)
-
     pedal_vals = segment["pedal"].dropna()
     pedal_mean = float(pedal_vals.mean()) if not pedal_vals.empty else float(target)
+    coast_speed = metrics.get("zero_torque_speed_kph") or _find_coast_speed(curve)
+    min_accel = metrics.get("peak_decel_ms2")
+    mean_accel = metrics.get("mean_decel_ms2")
+    r13h_violation = bool(metrics.get("gb21670_brake_lamp_required"))
 
     return {
         "file_name": file_name,
@@ -237,15 +245,32 @@ def _summarize_event(
         "start_time_s": float(times.iloc[0]) if len(times) else None,
         "end_time_s": float(times.iloc[-1]) if len(times) else None,
         "duration_s": float(times.iloc[-1] - times.iloc[0]) if len(times) >= 2 else None,
-        "speed_start": float(speeds.iloc[0]) if len(speeds) else None,
-        "speed_end": float(speeds.iloc[-1]) if len(speeds) else None,
+        "speed_start": metrics.get("speed_start_kph"),
+        "speed_end": metrics.get("speed_end_kph"),
         "ax_min": min_accel,
         "ax_mean": mean_accel,
-        "peak_jerk": peak_jerk,
+        "peak_jerk": metrics.get("peak_jerk_ms3"),
+        "peak_jerk_abs": metrics.get("peak_jerk_abs_ms3"),
+        "jerk_comfort_violations": metrics.get("jerk_comfort_violations"),
         "coast_speed": coast_speed,
+        "zero_torque_speed_kph": metrics.get("zero_torque_speed_kph"),
+        "ramp_shape": metrics.get("ramp_shape"),
+        "tip_out_rise_80pct_s": metrics.get("tip_out_rise_80pct_s"),
+        "tip_out_rise_to_target_s": metrics.get("tip_out_rise_to_target_s"),
+        "tip_in_peak_jerk_ms3": metrics.get("tip_in_peak_jerk_ms3"),
         "r13h_violation": r13h_violation,
-        "brake_blending": brake_applied,
-        "recovery_kwh": recovery_kwh,
+        "gb21670_brake_lamp_required": r13h_violation,
+        "brake_blending": bool(metrics.get("brake_blend_fraction", 0) > 0),
+        "brake_blend_fraction": metrics.get("brake_blend_fraction"),
+        "first_brake_blend_s": metrics.get("first_brake_blend_s"),
+        "stopped_on_regen": metrics.get("stopped_on_regen"),
+        "recovery_pct": metrics.get("recovery_pct"),
+        "recovery_kwh": metrics.get("regen_energy_kwh"),
+        "time_at_02g_s": metrics.get("time_at_02g_s"),
+        "time_at_05g_s": metrics.get("time_at_05g_s"),
+        "mfdd_100_50_ms2": metrics.get("mfdd_100_50_ms2"),
+        "mfdd_80_20_ms2": metrics.get("mfdd_80_20_ms2"),
+        "distance_m": metrics.get("distance_m"),
         "curve_points": len(curve),
         "status": "Usable",
     }
@@ -256,17 +281,29 @@ def analyze_one_pedal_file(
     frame: pd.DataFrame,
     settings: OnePedalSettings,
     group_label: str = "",
-) -> tuple[list[pd.DataFrame], list[dict[str, object]], pd.DataFrame]:
-    """Detect OPD events in one normalised, unit-converted measurement frame.
+    adjustments: SensitivityAdjustments | None = None,
+) -> tuple[
+    list[pd.DataFrame],
+    list[dict[str, object]],
+    pd.DataFrame,
+    pd.DataFrame,
+    dict[tuple[str, int], pd.DataFrame],
+    pd.DataFrame,
+    pd.DataFrame,
+]:
+    """Detect OPD events and compute full OPM metric buckets.
 
-    Returns ``(decel_curves, event_summaries, jerk_traces)`` where each decel
-    curve has columns ``file_name``, ``event_id``, ``target_pedal``,
-    ``group_label``, ``speed``, ``acceleration``.
+    Returns ``(decel_curves, summaries, jerk_traces, time_series, raw_segments,
+    speed_intervals, pedal_maps)``.
     """
 
     curves: list[pd.DataFrame] = []
     summaries: list[dict[str, object]] = []
     jerk_rows: list[pd.DataFrame] = []
+    time_rows: list[pd.DataFrame] = []
+    interval_rows: list[pd.DataFrame] = []
+    pedal_rows: list[pd.DataFrame] = []
+    raw_segments: dict[tuple[str, int], pd.DataFrame] = {}
 
     if frame.empty:
         summaries.append(
@@ -278,7 +315,7 @@ def analyze_one_pedal_file(
                 "status": "No usable speed/acceleration data",
             }
         )
-        return curves, summaries, pd.DataFrame()
+        return curves, summaries, pd.DataFrame(), pd.DataFrame(), raw_segments, pd.DataFrame(), pd.DataFrame()
 
     targets = _resolve_target_pedal(frame, settings)
     if not targets:
@@ -291,7 +328,7 @@ def analyze_one_pedal_file(
                 "status": "Could not determine target pedal",
             }
         )
-        return curves, summaries, pd.DataFrame()
+        return curves, summaries, pd.DataFrame(), pd.DataFrame(), raw_segments, pd.DataFrame(), pd.DataFrame()
 
     for target in sorted(set(int(value) for value in targets)):
         mask = _event_mask(frame, target, settings)
@@ -308,8 +345,9 @@ def analyze_one_pedal_file(
                 continue
 
             event_counter += 1
+            raw_segments[(file_name, event_counter)] = segment.copy()
             summary = _summarize_event(
-                file_name, event_counter, target, segment, curve, settings, group_label
+                file_name, event_counter, target, segment, curve, settings, group_label, adjustments
             )
             summaries.append(summary)
 
@@ -320,21 +358,20 @@ def analyze_one_pedal_file(
             tagged.insert(3, "group_label", group_label)
             curves.append(tagged.reset_index(drop=True))
 
-            jerk = _compute_jerk(segment)
-            jerk_rows.append(
-                pd.DataFrame(
-                    {
-                        "file_name": file_name,
-                        "event_id": event_counter,
-                        "target_pedal": target,
-                        "group_label": group_label,
-                        "time": segment["time"].values,
-                        "speed": segment["speed"].values,
-                        "acceleration": segment["acceleration"].values,
-                        "jerk": jerk.values,
-                    }
-                )
+            ts = build_time_series_record(
+                file_name, event_counter, target, group_label, segment, adjustments
             )
+            time_rows.append(ts)
+            jerk_rows.append(ts[["file_name", "event_id", "target_pedal", "group_label", "time", "speed", "acceleration", "jerk"]])
+            opm = analyze_opm_event(segment, settings.to_metric_settings(), adjustments, settings.brake_threshold)
+            si = opm["speed_intervals"].copy()
+            si.insert(0, "event_id", event_counter)
+            si.insert(0, "file_name", file_name)
+            interval_rows.append(si)
+            pm = opm["pedal_decel_map"].copy()
+            pm.insert(0, "event_id", event_counter)
+            pm.insert(0, "file_name", file_name)
+            pedal_rows.append(pm)
 
         if event_counter == 0:
             summaries.append(
@@ -348,7 +385,10 @@ def analyze_one_pedal_file(
             )
 
     jerk_traces = pd.concat(jerk_rows, ignore_index=True) if jerk_rows else pd.DataFrame()
-    return curves, summaries, jerk_traces
+    time_series = pd.concat(time_rows, ignore_index=True) if time_rows else pd.DataFrame()
+    speed_intervals = pd.concat(interval_rows, ignore_index=True) if interval_rows else pd.DataFrame()
+    pedal_maps = pd.concat(pedal_rows, ignore_index=True) if pedal_rows else pd.DataFrame()
+    return curves, summaries, jerk_traces, time_series, raw_segments, speed_intervals, pedal_maps
 
 
 def aggregate_opd_results(

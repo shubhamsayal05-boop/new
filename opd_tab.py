@@ -17,7 +17,15 @@ from vehicle_plotter.one_pedal import (
     normalize_opd_frame,
     opd_kpi_cards,
 )
-from vehicle_plotter.plotting import make_opd_decel_speed_figure, make_opd_jerk_figure
+from vehicle_plotter.opd_metrics import SensitivityAdjustments, recompute_summary_with_adjustments
+from vehicle_plotter.plotting import (
+    make_opm_blending_figure,
+    make_opm_pedal_decel_figure,
+    make_opm_speed_interval_figure,
+    make_opm_trace_figure,
+    make_opd_decel_speed_figure,
+    make_opd_jerk_figure,
+)
 from vehicle_plotter.processing import DECEL_TARGETS, build_group_label
 from vehicle_plotter.units import (
     ACCELERATION_UNITS,
@@ -28,7 +36,18 @@ from vehicle_plotter.units import (
     normalize_speed_unit,
 )
 
-OPD_RESULT_KEYS = ["opd_decel_curves", "opd_summary", "opd_jerk", "opd_signature", "opd_load_errors"]
+OPD_RESULT_KEYS = [
+    "opd_decel_curves",
+    "opd_summary",
+    "opd_jerk",
+    "opd_time_series",
+    "opd_speed_intervals",
+    "opd_pedal_maps",
+    "opd_raw_segments",
+    "opd_signature",
+    "opd_load_errors",
+    "opd_summary_base",
+]
 OPD_TARGET_OPTIONS = ["Auto"] + [str(value) for value in DECEL_TARGETS]
 
 # Common INCA channel name hints for auto-selection.
@@ -134,7 +153,45 @@ def _opd_signature(
     return hashlib.sha1(json.dumps(payload, sort_keys=True).encode("utf-8")).hexdigest()
 
 
-def _clear_opd_results() -> None:
+def _serialize_segments(raw: dict[tuple[str, int], pd.DataFrame]) -> dict[str, pd.DataFrame]:
+    return {f"{name}|{eid}": df for (name, eid), df in raw.items()}
+
+
+def _deserialize_segments(stored: dict[str, pd.DataFrame]) -> dict[tuple[str, int], pd.DataFrame]:
+    out: dict[tuple[str, int], pd.DataFrame] = {}
+    for key, df in stored.items():
+        name, eid = key.rsplit("|", 1)
+        out[(name, int(eid))] = df
+    return out
+
+
+def _apply_what_if(
+    summary_base: pd.DataFrame,
+    raw_segments: dict[tuple[str, int], pd.DataFrame],
+    settings: OnePedalSettings,
+    adjustments: SensitivityAdjustments,
+) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    base_rows = summary_base.to_dict(orient="records")
+    summary, time_series, intervals, pedal_maps = recompute_summary_with_adjustments(
+        raw_segments,
+        base_rows,
+        settings.to_metric_settings(),
+        adjustments,
+        settings.brake_threshold,
+    )
+    jerk = time_series[["file_name", "event_id", "target_pedal", "group_label", "time", "speed", "acceleration", "jerk"]].copy() if not time_series.empty else pd.DataFrame()
+    return summary, time_series, jerk, intervals, pedal_maps
+
+
+def _render_metric_bucket(title: str, metrics: dict[str, object], keys: list[tuple[str, str]]) -> None:
+    st.markdown(f"**{title}**")
+    cols = st.columns(min(len(keys), 4))
+    for idx, (key, label) in enumerate(keys):
+        val = metrics.get(key)
+        display = f"{val:.3g}" if isinstance(val, (int, float)) and val is not None else (str(val) if val is not None else "N/A")
+        cols[idx % len(cols)].metric(label, display)
+
+
     for key in OPD_RESULT_KEYS:
         st.session_state.pop(key, None)
 
@@ -321,6 +378,12 @@ def render_one_pedal_tab(
     with extra_cols[2]:
         min_points = st.number_input("Min points per event", min_value=3, max_value=500, value=10, step=1, key=resettable_key("opd_min_pts"))
 
+    comfort_cols = st.columns(2)
+    with comfort_cols[0]:
+        jerk_comfort = st.number_input("Jerk comfort ceiling (m/s³)", min_value=0.5, max_value=10.0, value=3.0, step=0.1, key=resettable_key("opd_jerk_comfort"))
+    with comfort_cols[1]:
+        speed_interval = st.number_input("Speed interval for benchmarking (KPH)", min_value=5.0, max_value=25.0, value=10.0, step=1.0, key=resettable_key("opd_speed_int"))
+
     settings = OnePedalSettings(
         pedal_tolerance=float(pedal_tolerance),
         brake_threshold=float(brake_threshold),
@@ -333,6 +396,8 @@ def render_one_pedal_tab(
         target_pedal=str(target_pedal),
         r13h_threshold_ms2=float(r13h_threshold),
         vehicle_mass_kg=float(vehicle_mass),
+        jerk_comfort_limit_ms3=float(jerk_comfort),
+        speed_interval_kph=float(speed_interval),
     )
 
     selected_files = st.multiselect(
@@ -368,9 +433,13 @@ def render_one_pedal_tab(
         curve_rows: list[pd.DataFrame] = []
         summary_rows: list[dict[str, object]] = []
         jerk_parts: list[pd.DataFrame] = []
+        time_parts: list[pd.DataFrame] = []
+        interval_parts: list[pd.DataFrame] = []
+        pedal_parts: list[pd.DataFrame] = []
+        raw_all: dict[tuple[str, int], pd.DataFrame] = {}
         load_errors: list[str] = []
 
-        with st.spinner("Detecting one-pedal deceleration events..."):
+        with st.spinner("Running full OPM/OPD analysis (signatures, jerk, transients, blending, energy)..."):
             for file_name in selected_files:
                 source = measurement_sources.get(file_name)
                 if source is None:
@@ -386,13 +455,20 @@ def render_one_pedal_tab(
                         accel_input_unit,
                         accel_output_unit,
                     )
-                    curves, summaries, jerk = analyze_one_pedal_file(
+                    curves, summaries, jerk, time_series, raw_segments, intervals, pedal_maps = analyze_one_pedal_file(
                         file_name, frame, settings, group_label=group_label
                     )
                     curve_rows.extend(curves)
                     summary_rows.extend(summaries)
+                    raw_all.update(raw_segments)
                     if not jerk.empty:
                         jerk_parts.append(jerk)
+                    if not time_series.empty:
+                        time_parts.append(time_series)
+                    if not intervals.empty:
+                        interval_parts.append(intervals)
+                    if not pedal_maps.empty:
+                        pedal_parts.append(pedal_maps)
                 except MemoryError:
                     load_errors.append(f"{file_name}: insufficient memory — try a larger resample step.")
                 except Exception as exc:
@@ -400,12 +476,21 @@ def render_one_pedal_tab(
 
         decel_curves, summary_table = aggregate_opd_results(curve_rows, summary_rows)
         jerk_traces = pd.concat(jerk_parts, ignore_index=True) if jerk_parts else pd.DataFrame()
+        time_series_all = pd.concat(time_parts, ignore_index=True) if time_parts else pd.DataFrame()
+        speed_intervals = pd.concat(interval_parts, ignore_index=True) if interval_parts else pd.DataFrame()
+        pedal_maps_all = pd.concat(pedal_parts, ignore_index=True) if pedal_parts else pd.DataFrame()
 
         st.session_state["opd_decel_curves"] = decel_curves
+        st.session_state["opd_summary_base"] = summary_table.copy()
         st.session_state["opd_summary"] = summary_table
         st.session_state["opd_jerk"] = jerk_traces
+        st.session_state["opd_time_series"] = time_series_all
+        st.session_state["opd_speed_intervals"] = speed_intervals
+        st.session_state["opd_pedal_maps"] = pedal_maps_all
+        st.session_state["opd_raw_segments"] = _serialize_segments(raw_all)
         st.session_state["opd_signature"] = current_sig
         st.session_state["opd_load_errors"] = load_errors
+        st.session_state["opd_settings_snapshot"] = settings
 
     has_results = st.session_state.get("opd_signature") == current_sig and "opd_decel_curves" in st.session_state
     if run_opd and not has_results:
@@ -421,65 +506,210 @@ def render_one_pedal_tab(
     decel_curves = st.session_state.get("opd_decel_curves", pd.DataFrame())
     summary_table = st.session_state.get("opd_summary", pd.DataFrame())
     jerk_traces = st.session_state.get("opd_jerk", pd.DataFrame())
+    time_series = st.session_state.get("opd_time_series", pd.DataFrame())
+    speed_intervals = st.session_state.get("opd_speed_intervals", pd.DataFrame())
+    pedal_maps = st.session_state.get("opd_pedal_maps", pd.DataFrame())
     load_errors = st.session_state.get("opd_load_errors", [])
+    settings_snapshot: OnePedalSettings = st.session_state.get("opd_settings_snapshot", settings)
+    raw_stored = st.session_state.get("opd_raw_segments", {})
+
+    section_header("What-if tuning", "Adjust traces live — optimizer can target these parameters later", icon="ruler")
+    with st.expander("Sensitivity sliders (preview without re-loading MF4)", expanded=False):
+        w_cols = st.columns(4)
+        with w_cols[0]:
+            accel_scale = st.slider("Acceleration scale", 0.5, 1.5, 1.0, 0.02, key=resettable_key("opd_adj_accel_scale"))
+        with w_cols[1]:
+            accel_offset = st.slider("Acceleration offset (m/s²)", -1.0, 1.0, 0.0, 0.05, key=resettable_key("opd_adj_accel_off"))
+        with w_cols[2]:
+            speed_scale = st.slider("Speed scale", 0.9, 1.1, 1.0, 0.01, key=resettable_key("opd_adj_speed_scale"))
+        with w_cols[3]:
+            pedal_offset = st.slider("Pedal offset (%)", -5.0, 5.0, 0.0, 0.5, key=resettable_key("opd_adj_pedal_off"))
+        w_cols2 = st.columns(3)
+        with w_cols2[0]:
+            jerk_smooth = st.slider("Jerk smoothing (samples)", 1, 15, 1, key=resettable_key("opd_adj_jerk_smooth"))
+        with w_cols2[1]:
+            speed_off = st.slider("Speed offset (KPH)", -10.0, 10.0, 0.0, 1.0, key=resettable_key("opd_adj_speed_off"))
+        with w_cols2[2]:
+            st.caption("Changes recompute jerk, transients, and compliance flags instantly.")
+
+        adjustments = SensitivityAdjustments(
+            accel_scale=float(accel_scale),
+            accel_offset_ms2=float(accel_offset),
+            speed_scale=float(speed_scale),
+            speed_offset_kph=float(speed_off),
+            pedal_offset_pct=float(pedal_offset),
+            jerk_smooth_samples=int(jerk_smooth),
+        )
+        if raw_stored and not st.session_state.get("opd_summary_base", pd.DataFrame()).empty:
+            summary_table, time_series, jerk_traces, speed_intervals, pedal_maps = _apply_what_if(
+                st.session_state["opd_summary_base"],
+                _deserialize_segments(raw_stored),
+                settings_snapshot,
+                adjustments,
+            )
+            st.session_state["opd_summary"] = summary_table
+            st.session_state["opd_time_series"] = time_series
+            st.session_state["opd_jerk"] = jerk_traces
+            st.session_state["opd_speed_intervals"] = speed_intervals
+            st.session_state["opd_pedal_maps"] = pedal_maps
 
     if load_errors:
         st.warning("Some files could not be processed:\n\n" + "\n".join(f"- {e}" for e in load_errors))
 
-    kpis = opd_kpi_cards(summary_table)
-    kpi_cols = st.columns(5)
-    kpi_cols[0].metric("OPD events", kpis["event_count"])
-    kpi_cols[1].metric("Max decel", f"{kpis['max_decel']:.2f}" if kpis["max_decel"] is not None else "N/A")
-    kpi_cols[2].metric("Mean decel", f"{kpis['mean_decel']:.2f}" if kpis["mean_decel"] is not None else "N/A")
-    kpi_cols[3].metric("R13-H flags", kpis["r13h_count"])
-    kpi_cols[4].metric("Brake blending", kpis["brake_blend_count"])
-
     usable = summary_table[summary_table.get("status", pd.Series(dtype=str)) == "Usable"] if not summary_table.empty else pd.DataFrame()
     if usable.empty:
-        st.warning("No usable OPD events were detected. Check pedal target, tolerances, and signal mapping.")
+        st.warning("No usable OPM events detected. Check pedal target, tolerances, and signal mapping.")
         if not summary_table.empty:
             st.dataframe(summary_table, width="stretch", hide_index=True)
         return
 
-    section_header("Deceleration vs Speed", "Primary OPD characteristic curves", icon="chart")
-    decel_fig = make_opd_decel_speed_figure(
-        decel_curves,
-        speed_unit=speed_output_unit,
-        acceleration_unit=accel_output_unit,
-        r13h_threshold_ms2=settings.r13h_threshold_ms2,
+    kpis = opd_kpi_cards(summary_table)
+    kpi_cols = st.columns(6)
+    kpi_cols[0].metric("Events", kpis["event_count"])
+    kpi_cols[1].metric("Max decel", f"{kpis['max_decel']:.2f}" if kpis["max_decel"] is not None else "N/A")
+    kpi_cols[2].metric("Mean decel", f"{kpis['mean_decel']:.2f}" if kpis["mean_decel"] is not None else "N/A")
+    kpi_cols[3].metric("GB21670 / R13-H", kpis["r13h_count"])
+    kpi_cols[4].metric("Brake blend", kpis["brake_blend_count"])
+    jerk_viol = int(pd.to_numeric(usable.get("jerk_comfort_violations", pd.Series(dtype=float)), errors="coerce").fillna(0).sum()) if not usable.empty else 0
+    kpi_cols[5].metric("Jerk > 3 m/s³ samples", jerk_viol)
+
+    tab_sig, tab_jerk, tab_pedal, tab_tip, tab_blend, tab_bench, tab_audit = st.tabs(
+        [
+            "Decel signature",
+            "Jerk & comfort",
+            "Pedal mapping",
+            "Tip-out transient",
+            "Blending & stop",
+            "Energy & benchmark",
+            "Full audit",
+        ]
     )
-    st.plotly_chart(decel_fig, width="stretch")
 
-    section_header("Event Audit", "Per-event KPIs and regulatory flags", icon="audit")
-    st.dataframe(summary_table, width="stretch", hide_index=True)
+    with tab_sig:
+        st.plotly_chart(
+            make_opd_decel_speed_figure(decel_curves, speed_unit=speed_output_unit, acceleration_unit=accel_output_unit, r13h_threshold_ms2=settings.r13h_threshold_ms2),
+            width="stretch",
+        )
+        if not time_series.empty:
+            st.plotly_chart(
+                make_opm_trace_figure(time_series, "acceleration", "Acceleration vs Time", f"Acceleration ({accel_output_unit})"),
+                width="stretch",
+            )
+        if not speed_intervals.empty:
+            st.plotly_chart(
+                make_opm_speed_interval_figure(speed_intervals, speed_unit=speed_output_unit, acceleration_unit=accel_output_unit),
+                width="stretch",
+            )
 
-    if not jerk_traces.empty:
-        section_header("Jerk Trace", "Comfort metric during regen ramp-in/out", icon="signal")
-        jerk_fig = make_opd_jerk_figure(jerk_traces, acceleration_unit=accel_output_unit)
-        st.plotly_chart(jerk_fig, width="stretch")
+    with tab_jerk:
+        st.caption("Literature comfort ceiling ≈ ±3 m/s³. Engine-brake-like OPD targets ~0.5 m/s³ peak jerk.")
+        if not jerk_traces.empty:
+            st.plotly_chart(make_opd_jerk_figure(jerk_traces, acceleration_unit=accel_output_unit), width="stretch")
+            st.plotly_chart(
+                make_opm_trace_figure(time_series, "jerk", "Jerk vs Time (first-class channel)", "Jerk (m/s³)"),
+                width="stretch",
+            )
+        for _, row in usable.iterrows():
+            _render_metric_bucket(
+                f"Event {row.get('event_id')} — {row.get('file_name')}",
+                row.to_dict(),
+                [
+                    ("peak_jerk_abs", "Peak |jerk| (m/s³)"),
+                    ("jerk_comfort_violations", "Samples > comfort"),
+                    ("tip_in_peak_jerk_ms3", "Tip-in peak jerk"),
+                ],
+            )
+
+    with tab_pedal:
+        if not pedal_maps.empty:
+            st.plotly_chart(make_opm_pedal_decel_figure(pedal_maps, acceleration_unit=accel_output_unit), width="stretch")
+        if not time_series.empty:
+            st.plotly_chart(
+                make_opm_trace_figure(time_series, "acceleration", "Accel vs Time (pedal overlay context)", f"Ax ({accel_output_unit})"),
+                width="stretch",
+            )
+        for _, row in usable.iterrows():
+            _render_metric_bucket(
+                f"Event {row.get('event_id')}",
+                row.to_dict(),
+                [
+                    ("zero_torque_speed_kph", "Zero-torque speed (KPH)"),
+                    ("ramp_shape", "Ramp shape"),
+                    ("coast_speed", "Coast speed (KPH)"),
+                ],
+            )
+
+    with tab_tip:
+        for _, row in usable.iterrows():
+            _render_metric_bucket(
+                f"Event {row.get('event_id')} — tip-out",
+                row.to_dict(),
+                [
+                    ("tip_out_rise_80pct_s", "Rise to 80% peak (s)"),
+                    ("tip_out_rise_to_target_s", "Rise to −1 m/s² (s)"),
+                    ("ax_min", "Peak decel (m/s²)"),
+                    ("tip_in_peak_jerk_ms3", "Tip-in jerk (m/s³)"),
+                ],
+            )
+
+    with tab_blend:
+        if not time_series.empty:
+            st.plotly_chart(make_opm_blending_figure(time_series), width="stretch")
+        for _, row in usable.iterrows():
+            _render_metric_bucket(
+                f"Event {row.get('event_id')} — blending / stop",
+                row.to_dict(),
+                [
+                    ("brake_blend_fraction", "Brake active fraction"),
+                    ("first_brake_blend_s", "First blend (s)"),
+                    ("stopped_on_regen", "Regen-only stop"),
+                    ("gb21670_brake_lamp_required", "GB21670 lamp req."),
+                ],
+            )
+
+    with tab_bench:
+        for _, row in usable.iterrows():
+            _render_metric_bucket(
+                f"Event {row.get('event_id')} — benchmark",
+                row.to_dict(),
+                [
+                    ("time_at_02g_s", "Time at 0.2g (s)"),
+                    ("time_at_05g_s", "Time at 0.5g (s)"),
+                    ("mfdd_100_50_ms2", "MFDD 100→50"),
+                    ("mfdd_80_20_ms2", "MFDD 80→20"),
+                    ("recovery_pct", "Recovery (%)"),
+                    ("distance_m", "Distance (m)"),
+                ],
+            )
+
+    with tab_audit:
+        st.dataframe(summary_table, width="stretch", hide_index=True)
 
     export_cols = st.columns(2)
     with export_cols[0]:
         try:
             st.download_button(
-                "Download OPD Excel",
+                "Download OPM Excel workbook",
                 data=export_opd_workbook(
                     decel_curves,
                     summary_table,
                     jerk_traces,
+                    time_series,
+                    speed_intervals,
+                    pedal_maps,
                     speed_unit=speed_output_unit,
                     acceleration_unit=accel_output_unit,
                 ),
-                file_name="one_pedal_analysis.xlsx",
+                file_name="opm_opd_analysis.xlsx",
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             )
         except ImportError:
             st.warning("Install openpyxl to enable Excel export.")
     with export_cols[1]:
         st.download_button(
-            "Download event summary CSV",
+            "Download full metrics CSV",
             data=summary_table.to_csv(index=False),
-            file_name="opd_event_summary.csv",
+            file_name="opm_event_metrics.csv",
             mime="text/csv",
         )
 

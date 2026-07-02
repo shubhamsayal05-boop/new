@@ -33,7 +33,7 @@ def _synthetic_opd_frame(duration_s: float = 30.0, sample_hz: float = 10.0) -> p
 def test_detects_opd_event():
     frame = _synthetic_opd_frame()
     settings = OnePedalSettings(target_pedal="10", min_event_duration_s=2.0, use_decel_speed_gate=False)
-    curves, summaries, jerk = analyze_one_pedal_file("synthetic.mf4", frame, settings)
+    curves, summaries, jerk, _, _, _, _ = analyze_one_pedal_file("synthetic.mf4", frame, settings)
     usable = [row for row in summaries if row.get("status") == "Usable"]
     assert len(usable) >= 1
     assert curves
@@ -49,7 +49,7 @@ def test_r13h_flag_when_strong_decel():
         use_decel_speed_gate=False,
         r13h_threshold_ms2=1.3,
     )
-    _, summaries, _ = analyze_one_pedal_file("strong.mf4", frame, settings)
+    _, summaries, _, _, _, _, _ = analyze_one_pedal_file("strong.mf4", frame, settings)
     usable = [row for row in summaries if row.get("status") == "Usable"]
     assert usable and usable[0]["r13h_violation"] is True
 

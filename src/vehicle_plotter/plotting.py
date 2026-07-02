@@ -407,3 +407,129 @@ def make_opd_pedal_trace_figure(
 
     _apply_common_layout(fig, title, "Time (s)", "Position (%)")
     return fig
+
+
+def make_opm_trace_figure(
+    time_series: pd.DataFrame,
+    y_col: str,
+    title: str,
+    y_title: str,
+    x_col: str = "time",
+) -> go.Figure:
+    """Generic OPM time-series overlay per event."""
+
+    fig = go.Figure()
+    if time_series.empty or y_col not in time_series.columns:
+        _apply_common_layout(fig, title, "Time (s)", y_title)
+        return fig
+    grouped = time_series.groupby(["file_name", "event_id", "target_pedal", "group_label"], sort=True)
+    for index, ((file_name, event_id, target_pedal, group_label), trace) in enumerate(grouped):
+        label_row = pd.Series(
+            {"file_name": file_name, "event_id": event_id, "target_pedal": target_pedal, "group_label": group_label}
+        )
+        color = PEDAL_COLORS.get(int(target_pedal), RANDOM_SCATTER_COLORS[index % len(RANDOM_SCATTER_COLORS)])
+        ordered = trace.sort_values(x_col)
+        fig.add_trace(
+            go.Scatter(
+                x=ordered[x_col],
+                y=ordered[y_col],
+                mode="lines",
+                name=_opd_event_label(label_row),
+                line=dict(color=color, width=2.0, dash=MODE_DASHES[index % len(MODE_DASHES)]),
+            )
+        )
+    _apply_common_layout(fig, title, "Time (s)", y_title)
+    return fig
+
+
+def make_opm_pedal_decel_figure(
+    pedal_maps: pd.DataFrame,
+    title: str = "Pedal → Deceleration Mapping",
+    acceleration_unit: str = "m/s^2",
+) -> go.Figure:
+    fig = go.Figure()
+    if pedal_maps.empty:
+        _apply_common_layout(fig, title, "Pedal (%)", f"Deceleration ({acceleration_unit})")
+        return fig
+    grouped = pedal_maps.groupby(["file_name", "event_id"], sort=True)
+    for index, ((file_name, event_id), curve) in enumerate(grouped):
+        ordered = curve.sort_values("pedal_pct")
+        fig.add_trace(
+            go.Scatter(
+                x=ordered["pedal_pct"],
+                y=ordered["ax_mean"],
+                mode="lines+markers",
+                name=f"{file_name} event {event_id}",
+                line=dict(color=RANDOM_SCATTER_COLORS[index % len(RANDOM_SCATTER_COLORS)], width=2),
+            )
+        )
+    _apply_common_layout(fig, title, "Pedal (%)", f"Mean deceleration ({acceleration_unit})")
+    return fig
+
+
+def make_opm_speed_interval_figure(
+    intervals: pd.DataFrame,
+    title: str = "Deceleration by Speed Interval",
+    speed_unit: str = "KPH",
+    acceleration_unit: str = "m/s^2",
+) -> go.Figure:
+    fig = go.Figure()
+    if intervals.empty:
+        _apply_common_layout(fig, title, f"Speed ({speed_unit})", f"Mean ax ({acceleration_unit})")
+        return fig
+    intervals = intervals.copy()
+    intervals["band_label"] = intervals.apply(
+        lambda r: f"{r['speed_band_low']:.0f}-{r['speed_band_high']:.0f}", axis=1
+    )
+    grouped = intervals.groupby(["file_name", "event_id"], sort=True)
+    for index, ((file_name, event_id), bands) in enumerate(grouped):
+        ordered = bands.sort_values("speed_band_low", ascending=False)
+        fig.add_trace(
+            go.Bar(
+                x=ordered["band_label"],
+                y=ordered["ax_mean"],
+                name=f"{file_name} ev{event_id}",
+                marker_color=RANDOM_SCATTER_COLORS[index % len(RANDOM_SCATTER_COLORS)],
+            )
+        )
+    fig.update_layout(barmode="group")
+    _apply_common_layout(fig, title, f"Speed band ({speed_unit})", f"Mean deceleration ({acceleration_unit})")
+    return fig
+
+
+def make_opm_blending_figure(time_series: pd.DataFrame, title: str = "Regen Decel vs Brake Position") -> go.Figure:
+    fig = go.Figure()
+    if time_series.empty:
+        _apply_common_layout(fig, title, "Time (s)", "Value")
+        return fig
+    grouped = time_series.groupby(["file_name", "event_id"], sort=True)
+    for index, ((file_name, event_id), trace) in enumerate(grouped):
+        ordered = trace.sort_values("time")
+        color = RANDOM_SCATTER_COLORS[index % len(RANDOM_SCATTER_COLORS)]
+        fig.add_trace(
+            go.Scatter(
+                x=ordered["time"],
+                y=ordered["acceleration"],
+                mode="lines",
+                name=f"{file_name} ax ev{event_id}",
+                line=dict(color=color, width=2),
+                yaxis="y",
+            )
+        )
+        if "brake" in ordered.columns:
+            fig.add_trace(
+                go.Scatter(
+                    x=ordered["time"],
+                    y=ordered["brake"],
+                    mode="lines",
+                    name=f"{file_name} brake ev{event_id}",
+                    line=dict(color=color, width=1.5, dash="dot"),
+                    yaxis="y2",
+                )
+            )
+    fig.update_layout(
+        yaxis=dict(title="Acceleration (m/s²)"),
+        yaxis2=dict(title="Brake (%)", overlaying="y", side="right"),
+    )
+    _apply_common_layout(fig, title, "Time (s)", "")
+    return fig

@@ -73,15 +73,18 @@ def export_opd_workbook(
     decel_curves: pd.DataFrame,
     summary_table: pd.DataFrame,
     jerk_traces: pd.DataFrame | None = None,
+    time_series: pd.DataFrame | None = None,
+    speed_intervals: pd.DataFrame | None = None,
+    pedal_maps: pd.DataFrame | None = None,
     speed_unit: str = "KPH",
     acceleration_unit: str = "m/s^2",
 ) -> bytes:
-    """Export OPD decel curves, event summary, and optional jerk traces to Excel."""
+    """Export full OPM/OPD analysis workbook."""
 
     buffer = io.BytesIO()
     with pd.ExcelWriter(buffer, engine="openpyxl") as writer:
         if summary_table is not None and not summary_table.empty:
-            summary_table.to_excel(writer, sheet_name="Events", index=False)
+            summary_table.to_excel(writer, sheet_name="EventMetrics", index=False)
         if decel_curves is not None and not decel_curves.empty:
             export_cols = decel_curves.copy()
             export_cols = export_cols.rename(
@@ -90,7 +93,13 @@ def export_opd_workbook(
                     "acceleration": f"acceleration ({acceleration_unit})",
                 }
             )
-            export_cols.to_excel(writer, sheet_name="DecelCurves", index=False)
+            export_cols.to_excel(writer, sheet_name="DecelVsSpeed", index=False)
+        if time_series is not None and not time_series.empty:
+            time_series.to_excel(writer, sheet_name="TimeSeries", index=False)
         if jerk_traces is not None and not jerk_traces.empty:
             jerk_traces.to_excel(writer, sheet_name="Jerk", index=False)
+        if speed_intervals is not None and not speed_intervals.empty:
+            speed_intervals.to_excel(writer, sheet_name="SpeedIntervals", index=False)
+        if pedal_maps is not None and not pedal_maps.empty:
+            pedal_maps.to_excel(writer, sheet_name="PedalDecelMap", index=False)
     return buffer.getvalue()
