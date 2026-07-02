@@ -271,7 +271,7 @@ def _advisor_context(extra: dict | None = None) -> dict:
         file_count=len(file_names),
         load_method=load_method,
         active_page=active_page,
-        signal_map=st.session_state.get("dl_signal_map", {}),
+        signal_map=st.session_state.get("dl_shared_signals", st.session_state.get("dl_signal_map", {})),
         load_errors=st.session_state.get("load_errors", []),
         opd_load_errors=st.session_state.get("opd_load_errors", []),
         audit_table=st.session_state.get("audit_table", pd.DataFrame()),
@@ -348,6 +348,7 @@ else:
         decel_start_speed=float(decel_start_speed),
         decel_start_speed_tolerance=float(decel_start_speed_tolerance),
         section_header=section_header,
+        resettable_key=resettable_key,
     )
     if workflow_vars.get("signal_map"):
         st.session_state["dl_signal_map"] = workflow_vars["signal_map"]

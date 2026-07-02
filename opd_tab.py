@@ -186,9 +186,19 @@ def render_one_pedal_tab(
     channel_options = sorted(all_channels, key=str.casefold)
     signal_options = [""] + channel_options if channel_options else [""]
 
+    from ui.shared_signals import (
+        ensure_shared_defaults,
+        persist_shared_core_signals,
+        sync_widgets_from_shared,
+    )
+
+    defaults = {role: _guess_channel(role, channel_options) for role in ("speed", "acceleration", "brake", "pedal")}
+    valid = set(signal_options)
+    ensure_shared_defaults(defaults, valid)
+    sync_widgets_from_shared("opd", resettable_key, valid)
+
     section_header("OPD Signal Mapping", "Required channels for event detection", icon="signal")
     core_cols = st.columns(4)
-    defaults = {role: _guess_channel(role, channel_options) for role in ("speed", "acceleration", "brake", "pedal")}
     with core_cols[0]:
         speed_signal = _signal_selectbox("Speed signal", resettable_key("opd_speed_signal"), signal_options, defaults["speed"])
     with core_cols[1]:
@@ -201,6 +211,19 @@ def render_one_pedal_tab(
         pedal_signal = _signal_selectbox(
             "Accelerator pedal signal", resettable_key("opd_pedal_signal"), signal_options, defaults["pedal"]
         )
+
+    persist_shared_core_signals(
+        "opd",
+        resettable_key,
+        {
+            "speed": speed_signal,
+            "acceleration": accel_signal,
+            "brake": brake_signal,
+            "pedal": pedal_signal,
+        },
+    )
+    if any((speed_signal, accel_signal, brake_signal, pedal_signal)):
+        st.caption("Core signals are shared with **Data Source / Speed Analysis** — selections stay in sync.")
 
     with st.expander("Optional EV signals (energy recovery)", expanded=False):
         opt_cols = st.columns(3)

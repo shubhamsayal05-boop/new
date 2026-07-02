@@ -405,22 +405,16 @@ def _build_summary(issues: list[DiagnosticIssue], health: int, active_page: str)
     return " ".join(parts)
 
 
-def enhance_with_llm(
+def enhance_with_copilot(
     report: AdvisorReport,
     context: dict[str, Any],
-    api_key: str,
-    model: str = "gpt-4o-mini",
+    config: "CopilotConfig | None" = None,
 ) -> str:
-    """Optional OpenAI enhancement; returns narrative text or raises on failure."""
+    """Optional Microsoft Copilot (Azure OpenAI) enhancement; returns narrative text."""
 
-    try:
-        from openai import OpenAI
-    except ImportError as exc:
-        raise RuntimeError(
-            "OpenAI package not installed. Add openai to requirements or use rule-based advice only."
-        ) from exc
+    from vehicle_plotter.copilot_client import CopilotConfig, complete_with_copilot, load_copilot_config
 
-    client = OpenAI(api_key=api_key)
+    cfg = config or load_copilot_config()
     payload = {
         "health_score": report.health_score,
         "summary": report.summary,
@@ -436,23 +430,30 @@ def enhance_with_llm(
                 "has_opd_results",
                 "active_page",
                 "load_method",
+                "signal_map",
             }
         },
     }
-    prompt = (
-        "You are an expert automotive test engineer advising on INCA MF4/DAT measurement analysis. "
-        "Given the diagnostic JSON, write a concise action plan (max 250 words) with numbered steps. "
-        "Prioritize critical issues first. Be specific about signal names, tolerances, and workflow pages. "
-        "Do not invent data not present in the JSON.\n\n"
+    system_prompt = (
+        "You are Microsoft Copilot assisting vehicle performance engineers with INCA MF4/DAT "
+        "measurement analysis in DriveLab Pro."
+    )
+    user_prompt = (
+        "Given the diagnostic JSON below, write a concise action plan (max 250 words) with numbered steps. "
+        "Prioritize critical issues first. Be specific about signal names, tolerances, and which app "
+        "workspace to open (Data Source, Speed Analysis, OPD Analysis). Do not invent data not in the JSON.\n\n"
         f"{json.dumps(payload, indent=2)}"
     )
-    response = client.chat.completions.create(
-        model=model,
-        messages=[
-            {"role": "system", "content": "You help vehicle performance engineers fix measurement analysis issues."},
-            {"role": "user", "content": prompt},
-        ],
-        temperature=0.3,
-        max_tokens=500,
-    )
-    return (response.choices[0].message.content or "").strip()
+    return complete_with_copilot(system_prompt, user_prompt, cfg)
+
+
+def enhance_with_llm(
+    report: AdvisorReport,
+    context: dict[str, Any],
+    api_key: str,
+    model: str = "gpt-4o-mini",
+) -> str:
+    """Deprecated: use :func:`enhance_with_copilot` with Azure OpenAI configuration."""
+
+    del api_key, model
+    return enhance_with_copilot(report, context)

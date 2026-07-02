@@ -22,17 +22,25 @@ streamlit run app.py
 
 Use **Read from local folder** for large MF4 files. Map INCA channels on **Data Source**, then run analysis on **Speed Analysis** or **OPD Analysis**.
 
-## AI Advisor
+## AI Advisor (Microsoft Copilot)
 
-The AI Advisor scans your session automatically and surfaces:
+Rule-based diagnostics run automatically. For natural-language action plans, enable **Enhance with Microsoft Copilot** on the AI Advisor page.
 
-- Missing signal mappings
-- Processing / memory errors
-- Audit failures (no usable segments, low point count)
-- OPD regulatory flags (UN R13-H, brake blending)
-- Stale results after settings changes
+Configure your company's Azure OpenAI deployment in `.streamlit/secrets.toml`:
 
-Click **Scan session** on the AI Advisor page. Enable **Enhance with OpenAI** and provide an API key (or set `OPENAI_API_KEY` in `.streamlit/secrets.toml`) for a natural-language action plan.
+```toml
+[copilot]
+azure_endpoint = "https://YOUR-RESOURCE.openai.azure.com/"
+api_key = "YOUR-KEY"
+deployment = "YOUR-DEPLOYMENT"
+api_version = "2024-08-01-preview"
+```
+
+See `.streamlit/secrets.toml.example` for a template.
+
+## Shared signal mapping
+
+Speed, acceleration, brake, and pedal channels selected on **Data Source** or **OPD Analysis** are **automatically synced** to the other workspace — you only map them once per session.
 
 ## Tests
 

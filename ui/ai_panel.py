@@ -7,7 +7,8 @@ from typing import Any
 import streamlit as st
 
 from ui.layout import render_ai_insight_compact, render_diagnostic_issues, render_page_header, section_container
-from vehicle_plotter.ai_advisor import AdvisorReport, collect_diagnostics, enhance_with_llm
+from vehicle_plotter.ai_advisor import AdvisorReport, collect_diagnostics, enhance_with_copilot
+from vehicle_plotter.copilot_client import CopilotConfig, load_copilot_config
 
 
 def build_advisor_context(**kwargs: Any) -> dict[str, Any]:
@@ -24,28 +25,58 @@ def render_ai_advisor_page(context: dict[str, Any]) -> None:
         "Automated issue detection and actionable fix suggestions for your measurement session.",
     )
 
+    config = load_copilot_config()
+
     col_scan, col_ai = st.columns([1, 1])
     with col_scan:
         scan = st.button("Scan session", type="primary", use_container_width=True)
     with col_ai:
-        use_llm = st.toggle("Enhance with OpenAI", value=False, help="Requires OPENAI_API_KEY in Streamlit secrets.")
-
-    api_key = ""
-    if use_llm:
-        api_key = st.text_input(
-            "OpenAI API key",
-            type="password",
-            value=_secret_api_key(),
-            help="Stored only for this session unless set in .streamlit/secrets.toml as OPENAI_API_KEY.",
+        use_copilot = st.toggle(
+            "Enhance with Microsoft Copilot",
+            value=False,
+            help="Uses your company's Azure OpenAI / Copilot deployment configured in secrets.",
         )
+
+    if use_copilot:
+        with st.expander("Microsoft Copilot connection", expanded=not config.is_configured):
+            st.caption(
+                "Configure once in `.streamlit/secrets.toml` under `[copilot]` — values below override secrets for this session."
+            )
+            endpoint = st.text_input(
+                "Azure OpenAI endpoint",
+                value=config.azure_endpoint,
+                placeholder="https://your-resource.openai.azure.com/",
+            )
+            deployment = st.text_input(
+                "Deployment name",
+                value=config.deployment,
+                placeholder="gpt-4o / copilot-deployment",
+            )
+            api_key = st.text_input("API key", type="password", value=config.api_key if config.api_key else "")
+            api_version = st.text_input("API version", value=config.api_version)
+            config = CopilotConfig(
+                azure_endpoint=endpoint.strip(),
+                api_key=api_key.strip(),
+                deployment=deployment.strip(),
+                api_version=api_version.strip() or "2024-08-01-preview",
+            )
+            if not config.is_configured:
+                st.info(
+                    "Example `secrets.toml`:\n\n"
+                    "```toml\n[copilot]\n"
+                    'azure_endpoint = "https://YOUR-RESOURCE.openai.azure.com/"\n'
+                    'api_key = "YOUR-KEY"\n'
+                    'deployment = "YOUR-DEPLOYMENT"\n'
+                    'api_version = "2024-08-01-preview"\n```'
+                )
 
     if scan or "dl_advisor_report" not in st.session_state:
         report = run_advisor(context)
-        if use_llm and api_key.strip():
+        if use_copilot:
             try:
-                report.ai_narrative = enhance_with_llm(report, context, api_key.strip())
+                report.ai_narrative = enhance_with_copilot(report, context, config)
             except Exception as exc:
-                st.warning(f"LLM enhancement unavailable: {exc}")
+                st.warning(f"Microsoft Copilot enhancement unavailable: {exc}")
         st.session_state["dl_advisor_report"] = report
     else:
         report = st.session_state.get("dl_advisor_report") or run_advisor(context)
@@ -54,7 +85,7 @@ def render_ai_advisor_page(context: dict[str, Any]) -> None:
     render_ai_insight_compact(report.summary, report.issues[0].title if report.issues else None)
 
     if report.ai_narrative:
-        with section_container("AI action plan", "LLM"):
+        with section_container("Copilot action plan", "Microsoft Copilot"):
             st.markdown(report.ai_narrative)
 
     with section_container("Detected issues", f"{len(report.issues)} total"):
@@ -80,10 +111,3 @@ def render_ai_sidebar_hint(context: dict[str, Any]) -> None:
         if st.button("Open AI Advisor", use_container_width=True):
             st.session_state["dl_nav_page"] = "AI Advisor"
             st.rerun()
-
-
-def _secret_api_key() -> str:
-    try:
-        return st.secrets.get("OPENAI_API_KEY", "")
-    except Exception:
-        return ""

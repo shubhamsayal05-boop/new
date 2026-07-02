@@ -8,6 +8,7 @@ import pandas as pd
 import streamlit as st
 
 from ui.app_helpers import *
+from ui.shared_signals import get_shared_signals
 from vehicle_plotter.exporting import export_plot_workbook
 from vehicle_plotter.metrics import (
     DEFAULT_SPEED_BANDS,
@@ -75,6 +76,7 @@ def render_analysis_sections(
     decel_start_speed: float,
     decel_start_speed_tolerance: float,
     section_header,
+    resettable_key,
 ) -> dict:
     speed_signal = accel_signal = brake_signal = pedal_signal = ""
     detected_speed_unit = detected_accel_unit = ""
@@ -141,6 +143,24 @@ def render_analysis_sections(
             else:
                 signal_options = [""] + channel_options
 
+            from ui.shared_signals import (
+                ensure_shared_defaults,
+                persist_shared_core_signals,
+                sync_widgets_from_shared,
+            )
+
+            valid = set(signal_options)
+            auto_defaults = {
+                "speed": next((o for o in channel_options if "vehiclespeed" in o.casefold().replace("_", "")), ""),
+                "acceleration": next(
+                    (o for o in channel_options if "accelerationchassis" in o.casefold().replace("_", "")), ""
+                ),
+                "brake": next((o for o in channel_options if "brakeposition" in o.casefold().replace("_", "")), ""),
+                "pedal": next((o for o in channel_options if "acceleratorpedal" in o.casefold().replace("_", "")), ""),
+            }
+            ensure_shared_defaults(auto_defaults, valid)
+            sync_widgets_from_shared("speed", resettable_key, valid)
+
             signal_cols = st.columns(4)
             with signal_cols[0]:
                 speed_signal = signal_selectbox("Speed signal", "speed_signal", signal_options)
@@ -150,6 +170,19 @@ def render_analysis_sections(
                 brake_signal = signal_selectbox("Brake signal", "brake_signal", signal_options)
             with signal_cols[3]:
                 pedal_signal = signal_selectbox("Accelerator pedal signal", "pedal_signal", signal_options)
+
+            persist_shared_core_signals(
+                "speed",
+                resettable_key,
+                {
+                    "speed": speed_signal,
+                    "acceleration": accel_signal,
+                    "brake": brake_signal,
+                    "pedal": pedal_signal,
+                },
+            )
+            if any((speed_signal, accel_signal, brake_signal, pedal_signal)):
+                st.caption("Core signals are shared with **OPD Analysis** — no need to re-select there.")
 
             detected_speed_unit = unit_from_sources(speed_signal, measurement_sources, file_signatures)
             detected_accel_unit = unit_from_sources(accel_signal, measurement_sources, file_signatures)
@@ -1484,7 +1517,7 @@ def render_analysis_sections(
                     st.warning("Install the updated requirements to enable metrics Excel export.")
 
     return {
-        "signal_map": signal_map,
+        "signal_map": {**signal_map, **get_shared_signals()} if signal_map else get_shared_signals(),
         "speed_output_unit": speed_output_unit,
         "acceleration_output_unit": acceleration_output_unit,
         "target_curves": target_curves,
